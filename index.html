@@ -1,0 +1,2921 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Régulation Ambulancier Pro</title>
+    <meta name="theme-color" content="#0F1216">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <!-- ═══════════════════════════════════════════════════════
+         TAILWIND CSS — VERSION INLINE (fonctionne hors-ligne)
+         Source : https://cdn.tailwindcss.com (copié localement)
+    ═══════════════════════════════════════════════════════ -->
+    <style>
+        /* ── Reset & base ── */
+        *,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}
+        html{line-height:1.5;-webkit-text-size-adjust:100%;tab-size:4;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+        body{margin:0}
+        h1,h2,h3{font-size:inherit;font-weight:inherit}
+        a{color:inherit;text-decoration:inherit}
+        b,strong{font-weight:bolder}
+        button,input,select,textarea{font-family:inherit;font-size:100%;font-weight:inherit;line-height:inherit;color:inherit;margin:0;padding:0}
+        button{cursor:pointer;background-color:transparent;background-image:none}
+        template{display:none}
+
+        /* ── Utilities ── */
+        .fixed{position:fixed}.sticky{position:sticky}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0}
+        .top-0{top:0}.bottom-6{bottom:1.5rem}.right-6{right:1.5rem}.left-0{left:0}.right-0{right:0}.mt-1{margin-top:.25rem}
+        .z-20{z-index:20}.z-30{z-index:30}.z-50{z-index:50}
+        .flex{display:flex}.grid{display:grid}.block{display:block}.hidden{display:none}
+        .flex-1{flex:1 1 0%}.flex-col{flex-direction:column}.items-center{align-items:center}.items-start{align-items:flex-start}
+        .justify-between{justify-content:space-between}.justify-center{justify-content:center}
+        .gap-1{gap:.25rem}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}
+        .space-y-1>*+*{margin-top:.25rem}.space-y-1\.5>*+*{margin-top:.375rem}.space-y-3>*+*{margin-top:.75rem}.space-y-4>*+*{margin-top:1rem}
+        .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+        .w-full{width:100%}.w-14{width:3.5rem}.h-14{height:3.5rem}.min-w-0{min-width:0}
+        .max-h-40{max-height:10rem}.max-h-48{max-height:12rem}.overflow-y-auto{overflow-y:auto}.overflow-hidden{overflow:hidden}
+        .rounded{border-radius:.25rem}.rounded-xl{border-radius:.75rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}
+        .border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-2{border-width:2px}.border-dashed{border-style:dashed}
+        .p-2{padding:.5rem}.p-2\.5{padding:.625rem}.p-3{padding:.75rem}.p-4{padding:1rem}
+        .px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-3\.5{padding-left:.875rem;padding-right:.875rem}.px-4{padding-left:1rem;padding-right:1rem}
+        .py-0\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\.5{padding-top:.875rem;padding-bottom:.875rem}.py-12{padding-top:3rem;padding-bottom:3rem}
+        .pl-1{padding-left:.25rem}.pb-24{padding-bottom:6rem}
+        .mb-1{margin-bottom:.25rem}.mb-1\.5{margin-bottom:.375rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-6{margin-bottom:1.5rem}.-my-2{margin-top:-.5rem;margin-bottom:-.5rem}.pt-0\.5{padding-top:.125rem}.pt-1\.5{padding-top:.375rem}
+        .text-xs{font-size:.75rem;line-height:1rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-base{font-size:1rem;line-height:1.5rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-2xl{font-size:1.5rem;line-height:2rem}
+        .font-medium{font-weight:500}.font-semibold{font-weight:600}.font-bold{font-weight:700}
+        .text-center{text-align:center}.text-left{text-align:left}
+        .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .shadow-lg{box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+        .shadow-xl{box-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1)}
+        .transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}
+        .transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}
+        .duration-200{transition-duration:200ms}.duration-300{transition-duration:300ms}
+        .ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}
+        .opacity-0{opacity:0}
+        .-translate-y-2{--tw-translate-y:-.5rem;transform:translate(var(--tw-translate-x,0),var(--tw-translate-y,0))}
+        .scale-95{--tw-scale-x:.95;--tw-scale-y:.95;transform:scale(.95)}
+        .active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:scale(.95)}
+        .hover\:underline:hover{text-decoration-line:underline}
+        .hover\:bg-\[\#2A3038\]:hover{background-color:#2A3038}.hover\:bg-\[\#3F4754\]:hover{background-color:#3F4754}.hover\:bg-black\/60:hover{background-color:rgba(0,0,0,.6)}
+        .ring-2{--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 0 2px var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),0 0 #0000}
+        .ring-\[\#34D399\]{--tw-ring-color:#34D399}
+        .animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+        .backdrop-blur{backdrop-filter:blur(8px)}
+        /* Colors */
+        .bg-\[\#0F1216\]{background-color:#0F1216}.bg-\[\#0F1216\]\/95{background-color:rgba(15,18,22,.95)}
+        .bg-\[\#141920\]{background-color:#141920}.bg-\[\#171E26\]{background-color:#171E26}.bg-\[\#242A33\]{background-color:#242A33}
+        .bg-\[\#2A3038\]{background-color:#2A3038}.bg-black\/20{background-color:rgba(0,0,0,.2)}.bg-black\/30{background-color:rgba(0,0,0,.3)}.bg-black\/40{background-color:rgba(0,0,0,.4)}
+        .bg-white\/10{background-color:rgba(255,255,255,.1)}.bg-\[\#F4B942\]{background-color:#F4B942}
+        .bg-\[#0A251C\]{background-color:#0A251C}.bg-emerald-900\/50{background-color:rgba(6,78,59,.5)}.bg-emerald-950\/60{background-color:rgba(2,44,34,.6)}
+        .bg-amber-950\/80{background-color:rgba(69,26,3,.8)}.bg-red-950\/90{background-color:rgba(60,12,12,.9)}
+        .bg-\[\#14181C\]{background-color:#14181C}
+        /* Text colors */
+        .text-white{color:#fff}.text-\[\#E8E6E1\]{color:#E8E6E1}.text-\[\#A8B0B8\]{color:#A8B0B8}.text-\[\#7A8590\]{color:#7A8590}
+        .text-\[\#F4B942\]{color:#F4B942}.text-\[\#34D399\]{color:#34D399}.text-\[\#C084FC\]{color:#C084FC}.text-\[\#FBBF24\]{color:#FBBF24}
+        .text-red-400{color:#f87171}.text-amber-200{color:#fde68a}.text-emerald-200{color:#a7f3d0}.text-emerald-300{color:#6ee7b7}.text-blue-300{color:#93c5fd}
+        .text-yellow-400{color:#facc15}.\text-\[\#14181C\]{color:#14181C}
+        /* Border colors */
+        .border-\[\#2A3038\]{border-color:#2A3038}.border-\[\#232932\]{border-color:#232932}.border-\[\#3F4754\]{border-color:#3F4754}
+        .border-\[\#059669\]{border-color:#059669}.border-\[\#D97706\]{border-color:#D97706}
+        .border-amber-500{border-color:#f59e0b}.border-red-500{border-color:#ef4444}.border-emerald-500{border-color:#10b981}.border-emerald-700{border-color:#047857}
+        .border-white\/5{border-color:rgba(255,255,255,.05)}.border-white\/10{border-color:rgba(255,255,255,.1)}.border-transparent{border-color:transparent}
+        /* Special text sizes */
+        .\[\&\]:text-\[11px\]{font-size:11px}.text-\[11px\]{font-size:11px}.text-\[10px\]{font-size:10px}
+        .text-\[\#E8E6E1\]\/80{color:rgba(232,230,225,.8)}
+
+        /* ── Custom app styles ── */
+        body { background-color: #0F1216; color: #E8E6E1; font-family: system-ui, -apple-system, sans-serif; }
+        input[type="time"]::-webkit-calendar-picker-indicator,
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
+        input[type="text"], input[type="number"], input[type="time"], input[type="date"] { background-color: #171E26; border: 1px solid #2A3038; border-radius: .75rem; padding: .75rem .875rem; font-size: .875rem; color: #E8E6E1; width: 100%; outline: none; }
+        input[type="text"]:focus, input[type="number"]:focus, input[type="time"]:focus, input[type="date"]:focus { border-color: #F4B942; }
+        .btn-primary { background-color: #F4B942; color: #14181C; font-weight: 700; padding: .875rem 1rem; border-radius: .75rem; font-size: .875rem; width: 100%; transition: opacity .15s; }
+        .btn-primary:active { opacity: .85; }
+        .transition-height { transition: max-height .3s ease, opacity .3s ease; overflow: hidden; }
+
+        /* ── Offline banner ── */
+        #offline-banner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: #7c2d12; color: #fde68a; font-size: 11px; font-weight: 700; text-align: center; padding: 6px 12px; }
+        body.is-offline #offline-banner { display: block; }
+
+        /* ── Écran de chargement (évite la page blanche pendant que Alpine.js se charge) ── */
+        [x-cloak] { display: none !important; }
+        #app-loading {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #14181C; color: #E8E6E1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: .75rem; font-size: .9rem;
+        }
+        #app-loading .spinner {
+            width: 34px; height: 34px; border-radius: 50%;
+            border: 3px solid #2A3038; border-top-color: #F4B942;
+            animation: app-loading-spin .8s linear infinite;
+        }
+        @keyframes app-loading-spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+
+<body class="pb-24">
+
+<!-- ── Écran de chargement : visible dès l'ouverture, masqué dès qu'Alpine.js a démarré.
+     Sans dépendre d'Alpine (pur HTML/CSS) pour ne jamais laisser une page blanche,
+     même si le chargement du script (CDN) prend quelques secondes. ── -->
+<div id="app-loading">
+    <div class="spinner"></div>
+    <div>Chargement de MonPlanning…</div>
+</div>
+<script>
+    // Masque l'écran de chargement dès qu'Alpine a fini d'initialiser tous les composants.
+    document.addEventListener('alpine:initialized', () => {
+        const el = document.getElementById('app-loading');
+        if (el) el.remove();
+    });
+    // Filet de sécurité : si l'évènement n'arrive jamais (ex. erreur réseau sur le CDN),
+    // on masque quand même l'écran après 8s pour ne pas bloquer l'accès à l'app.
+    setTimeout(() => {
+        const el = document.getElementById('app-loading');
+        if (el) el.remove();
+    }, 8000);
+</script>
+
+<!-- ── Bandeau hors-ligne ── -->
+<div id="offline-banner">⚠️ Mode hors-ligne — données locales uniquement, calcul de trajet estimé</div>
+
+<div x-data="ambulanceApp()" x-init="init()" @scroll.window="handleScroll()" x-cloak>
+
+    <!-- ══════════════════════════════════════════
+         EN-TÊTE STICKY
+    ══════════════════════════════════════════ -->
+    <div class="sticky top-0 z-20 bg-[#0F1216]/95 backdrop-blur border-b border-[#2A3038] px-4 transition-all duration-300"
+         :class="isCollapsed ? 'py-1.5 space-y-1' : 'py-3 space-y-3'">
+
+        <!-- Titre + boutons -->
+        <div class="flex justify-between items-center" x-show="!isCollapsed">
+            <div>
+                <h1 class="text-lg font-bold text-[#F4B942]">Régulation Ambulancier</h1>
+                <p class="text-xs text-[#7A8590]">Trafic Waze & Logistique</p>
+            </div>
+            <div class="flex gap-2 items-center">
+                <button @click="notifEnabled = !notifEnabled"
+                        :class="notifEnabled ? 'text-[#F4B942]' : 'text-[#7A8590]'"
+                        class="text-xs font-semibold">
+                    <span x-text="notifEnabled ? '🔔 On' : '🔕 Off'"></span>
+                </button>
+                <button @click="exportJSON()" class="text-xs text-blue-300 font-semibold hover:underline">📤</button>
+                <button @click="importJSON()" class="text-xs text-blue-300 font-semibold hover:underline">📥</button>
+                <button x-show="filteredCourses.length > 0" @click="clearAll()" class="text-xs text-red-400 hover:underline">Effacer</button>
+            </div>
+        </div>
+
+        <!-- Sélecteur de date -->
+        <div class="flex items-center gap-2 bg-[#171E26] rounded-xl border border-[#2A3038]"
+             :class="isCollapsed ? 'p-1.5' : 'p-2'">
+            <span class="text-xs font-bold text-[#A8B0B8] pl-1" x-show="!isCollapsed">Jour :</span>
+            <input type="date" x-model="selectedDate" @change="saveDate()"
+                   style="background:transparent;border:none;padding:.25rem .5rem;font-size:.875rem;font-weight:700;color:white;outline:none;flex:1;text-align:center;">
+            <button x-show="isCollapsed" @click="isCollapsed = false" class="text-xs text-[#F4B942] px-2 font-bold">ℹ️</button>
+        </div>
+
+        <!-- Légende -->
+        <div x-show="!isCollapsed" class="flex flex-col gap-1 bg-[#141920] p-2.5 rounded-xl border border-[#232932] text-[11px]">
+            <div class="flex items-center justify-between">
+                <span class="text-[#7A8590] font-medium">
+                    Légende : <span class="text-[#F4B942] font-bold" x-text="'(' + filteredCourses.length + ' course' + (filteredCourses.length > 1 ? 's' : '') + ')'"></span>
+                </span>
+                <div class="flex gap-2.5">
+                    <span class="font-semibold text-[#C084FC]">💜 Avance</span>
+                    <span class="font-semibold text-[#34D399]">💚 À l'heure</span>
+                    <span class="font-semibold text-[#FBBF24]">💛 À décaler</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- GPS vers prochain patient -->
+        <div x-show="geoStatus === 'ok' && geoTimeToNext !== null"
+             class="bg-[#0A251C] border border-[#059669] rounded-xl px-3 py-2 text-[11px] font-semibold text-[#34D399] flex flex-col gap-1">
+            <span>📍 Depuis votre position : <b x-text="geoTimeToNext + ' min'"></b> jusqu'au prochain patient.</span>
+            <span x-show="geoHeureDepartConseillee">🚗 Partez avant <b x-text="geoHeureDepartConseillee"></b> pour être à l'heure.</span>
+        </div>
+        <div x-show="geoStatus === 'ok' && geoTimeToNext === null"
+             class="bg-[#141920] border border-[#232932] rounded-xl px-3 py-2 text-[11px] font-medium text-[#7A8590] flex items-center gap-2">
+            <span>📍</span><span>GPS actif — aucun prochain patient aujourd'hui.</span>
+        </div>
+        <div x-show="geoStatus === 'denied' || geoStatus === 'unsupported'"
+             class="bg-amber-950/80 border border-amber-500 rounded-xl px-3 py-2 text-[11px] font-medium text-amber-200 flex items-center gap-2">
+            <span>⚠️</span><span>GPS indisponible — calcul basé sur l'adresse théorique.</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         LISTE DES COURSES
+    ══════════════════════════════════════════ -->
+    <div class="p-4 space-y-4">
+
+        <template x-if="filteredCourses.length > 0">
+            <div class="bg-[#0F2A1F] border border-[#1F4A38] rounded-xl px-4 py-3 space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-semibold text-[#7A8590]">📋 Total théorique</span>
+                    <span class="text-sm font-bold text-[#7A8590]" x-text="totalJourTheorique.toFixed(2) + ' €'"></span>
+                </div>
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-sm font-bold text-[#34D399] flex items-center gap-1.5">
+                        ✅ Total réel (fait)
+                        <span x-show="totalReelEstManuel && !editingTotalReel" class="text-[9px] px-1 py-0.5 rounded font-bold" style="background:#2A1805;color:#FBBF24">manuel</span>
+                    </span>
+                    <template x-if="!editingTotalReel">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-lg font-bold text-[#34D399]" x-text="totalJourReel.toFixed(2) + ' €'"></span>
+                            <button type="button" @click="toggleEditTotalReel()" class="text-[11px] px-1" style="color:#7A8590">✏️</button>
+                            <button type="button" x-show="totalReelEstManuel" @click="clearTotalReelManuel()" class="text-[11px] px-1" style="color:#7A8590">✕</button>
+                        </div>
+                    </template>
+                    <template x-if="editingTotalReel">
+                        <div class="flex items-center gap-1.5">
+                            <input type="number" step="0.01" x-model="totalReelInput" @keydown.enter="setTotalReelManuel()"
+                                   style="width:6.5rem;padding:.3rem .5rem;font-size:.85rem;font-weight:700;border-radius:.5rem;text-align:right;">
+                            <button type="button" @click="setTotalReelManuel()" class="text-[11px] font-bold px-2 py-1 rounded" style="background:#1F4A38;color:#34D399">✓</button>
+                            <button type="button" @click="editingTotalReel=false" class="text-[11px] px-1" style="color:#7A8590">✕</button>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template x-if="filteredCourses.length === 0">
+            <div class="text-center py-12 text-[#7A8590] text-sm border-2 border-dashed border-[#2A3038] rounded-2xl">
+                Aucun transport pour ce jour. Appuyez sur <b style="color:#F4B942">+</b> en bas.
+            </div>
+        </template>
+
+        <!-- Calculateur rapide : km → prix en un clic -->
+        <button type="button" @click="calcOuvert = !calcOuvert; calcResult = null"
+                class="w-full flex items-center justify-between bg-[#171E26] border border-[#2A3038] rounded-xl px-4 py-2.5 text-sm font-bold text-[#A8B0B8]">
+            <span>🧮 Calculateur rapide</span>
+            <span x-text="calcOuvert ? '▲' : '▼'"></span>
+        </button>
+
+        <template x-if="calcOuvert">
+            <div class="bg-[#141920] border border-[#232932] rounded-xl p-3 space-y-3">
+                <!-- Source du km : manuel ou via adresses (géolocalisation) -->
+                <div class="flex gap-2">
+                    <button type="button" @click="calcModeGeoloc = false"
+                            :style="!calcModeGeoloc ? 'background:#1A3A5C;color:#60A5FA;border-color:#3B82F6' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                            class="flex-1 text-xs font-bold py-2 rounded-lg border">✏️ Km manuel</button>
+                    <button type="button" @click="calcModeGeoloc = true"
+                            :style="calcModeGeoloc ? 'background:#1A3A5C;color:#60A5FA;border-color:#3B82F6' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                            class="flex-1 text-xs font-bold py-2 rounded-lg border">📍 Via adresses</button>
+                </div>
+
+                <!-- Mode manuel : saisie directe du km -->
+                <template x-if="!calcModeGeoloc">
+                    <div>
+                        <label class="block text-[10px] font-semibold text-[#7A8590] mb-1">Kilomètres</label>
+                        <input type="number" min="0" step="0.1" x-model="calcKm" @input="calcRapide()"
+                               placeholder="Ex: 44"
+                               style="background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.5rem .75rem;font-size:1rem;font-weight:700;color:white;width:100%;text-align:center;">
+                    </div>
+                </template>
+
+                <!-- Mode géolocalisation : deux adresses → km réel calculé automatiquement -->
+                <template x-if="calcModeGeoloc">
+                    <div class="space-y-2">
+                        <div class="relative">
+                            <label class="block text-[10px] font-semibold text-[#7A8590] mb-1">Adresse de départ</label>
+                            <input type="text" x-model="calcDepart"
+                                   @input.debounce.400ms="searchAddress(calcDepart, 'calcDepart')"
+                                   placeholder="Ex: 12 rue des Roses, Molsheim"
+                                   style="background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.5rem .75rem;font-size:.8rem;color:white;width:100%;">
+                            <div x-show="calcSuggestionsDepart.length > 0"
+                                 class="absolute z-50 left-0 right-0 mt-1 bg-[#242A33] border border-[#2A3038] rounded-xl max-h-40 overflow-y-auto shadow-xl">
+                                <template x-for="s in calcSuggestionsDepart">
+                                    <button type="button" @click="selectAddress(s, 'calcDepart')"
+                                            style="display:block;width:100%;text-align:left;padding:.5rem .75rem;font-size:.7rem;color:#E8E6E1;border-bottom:1px solid #2A3038;"
+                                            x-text="(s.isFavorite ? '⭐ ' : '') + s.label"></button>
+                                </template>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <label class="block text-[10px] font-semibold text-[#7A8590] mb-1">Adresse d'arrivée</label>
+                            <input type="text" x-model="calcArrivee"
+                                   @input.debounce.400ms="searchAddress(calcArrivee, 'calcArrivee')"
+                                   placeholder="Ex: Clinique Sainte-Anne, Strasbourg"
+                                   style="background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.5rem .75rem;font-size:.8rem;color:white;width:100%;">
+                            <div x-show="calcSuggestionsArrivee.length > 0"
+                                 class="absolute z-50 left-0 right-0 mt-1 bg-[#242A33] border border-[#2A3038] rounded-xl max-h-40 overflow-y-auto shadow-xl">
+                                <template x-for="s in calcSuggestionsArrivee">
+                                    <button type="button" @click="selectAddress(s, 'calcArrivee')"
+                                            style="display:block;width:100%;text-align:left;padding:.5rem .75rem;font-size:.7rem;color:#E8E6E1;border-bottom:1px solid #2A3038;"
+                                            x-text="(s.isFavorite ? '⭐ ' : '') + s.label"></button>
+                                </template>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-center" style="color:#7A8590;" x-show="calcLoadingRoute">📍 Calcul de la distance…</p>
+                        <p class="text-[10px] text-center" style="color:#34D399;" x-show="!calcLoadingRoute && calcKm" x-text="'Distance route réelle : ' + calcKm + ' km'"></p>
+                    </div>
+                </template>
+                <!-- Type de forfait -->
+                <div class="flex gap-2">
+                    <button type="button" @click="calcForfait='dep'; calcRapide()"
+                            :style="calcForfait==='dep' ? 'background:#1A3A5C;color:#60A5FA;border-color:#3B82F6' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                            class="flex-1 text-xs font-bold py-2 rounded-lg border">Dép.</button>
+                    <button type="button" @click="calcForfait='aggl'; calcRapide()"
+                            :style="calcForfait==='aggl' ? 'background:#1A3A5C;color:#60A5FA;border-color:#3B82F6' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                            class="flex-1 text-xs font-bold py-2 rounded-lg border">Aggl.</button>
+                    <button type="button" @click="calcForfait='pec'; calcRapide()"
+                            :style="calcForfait==='pec' ? 'background:#1A3A5C;color:#60A5FA;border-color:#3B82F6' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                            class="flex-1 text-xs font-bold py-2 rounded-lg border">PEC</button>
+                </div>
+                <!-- Majorations -->
+                <div class="flex gap-2">
+                    <button type="button" @click="calcNuit=!calcNuit; calcFerie=false; calcRapide()"
+                            :style="calcNuit ? 'background:#1F1A3A;color:#A78BFA;border-color:#7C3AED' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                            class="flex-1 text-xs font-bold py-2 rounded-lg border">🌙 Nuit</button>
+                    <button type="button" @click="calcFerie=!calcFerie; calcNuit=false; calcRapide()"
+                            :style="calcFerie ? 'background:#1F1A3A;color:#A78BFA;border-color:#7C3AED' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                            class="flex-1 text-xs font-bold py-2 rounded-lg border">📅 Dimanche/Férié</button>
+                </div>
+                <!-- Tarif B2 : caisse n'acceptant pas le majoré géoloc (ex: MGEN) -->
+                <button type="button" @click="calcTarifB2=!calcTarifB2; calcRapide()"
+                        :style="calcTarifB2 ? 'background:#1A3A5C;color:#60A5FA;border-color:#3B82F6' : 'background:#171E26;color:#7A8590;border-color:#2A3038'"
+                        class="w-full text-xs font-bold py-2 rounded-lg border">💳 Tarif B2 (caisse n'acceptant pas le majoré)</button>
+                <!-- Résultat -->
+                <template x-if="calcResult">
+                    <div class="bg-[#0F2A1F] border border-[#1F4A38] rounded-xl px-4 py-3 space-y-1.5">
+                        <div class="flex justify-between text-xs text-[#7A8590]">
+                            <span>Forfait</span>
+                            <span x-text="calcResult.forfait.toFixed(2) + ' €'"></span>
+                        </div>
+                        <div class="flex justify-between text-xs text-[#7A8590]" x-show="calcResult.km > 0">
+                            <span>Kilométrique</span>
+                            <span x-text="calcResult.km.toFixed(2) + ' €'"></span>
+                        </div>
+                        <div class="flex justify-between text-xs text-[#7A8590]" x-show="calcResult.valorisation > 0">
+                            <span>Valorisation court</span>
+                            <span x-text="calcResult.valorisation.toFixed(2) + ' €'"></span>
+                        </div>
+                        <div class="flex justify-between font-bold text-[#34D399] text-lg pt-1 border-t border-[#1F4A38]">
+                            <span>TOTAL</span>
+                            <span x-text="calcResult.total.toFixed(2) + ' €'"></span>
+                        </div>
+                        <div class="flex justify-between text-[10px] text-[#7A8590]">
+                            <span x-text="'RO 55% : ' + calcResult.ro.toFixed(2) + ' €'"></span>
+                            <span x-text="'RC 45% : ' + calcResult.rc.toFixed(2) + ' €'"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Bilan sur période libre (1 jour, 2 jours, semaine, mois, etc.) -->
+        <button type="button" @click="bilanOuvert = !bilanOuvert; if(bilanOuvert && !bilanDebut) bilanRaccourci('semaine')"
+                class="w-full flex items-center justify-between bg-[#171E26] border border-[#2A3038] rounded-xl px-4 py-2.5 text-sm font-bold text-[#A8B0B8]">
+            <span>📊 Bilan sur une période</span>
+            <span x-text="bilanOuvert ? '▲' : '▼'"></span>
+        </button>
+
+        <template x-if="bilanOuvert">
+            <div class="bg-[#141920] border border-[#232932] rounded-xl p-3 space-y-3">
+                <div class="flex gap-2">
+                    <button type="button" @click="bilanRaccourci('jour')" class="flex-1 text-xs font-semibold py-1.5 rounded-lg bg-[#171E26] border border-[#2A3038] text-[#A8B0B8] active:scale-95">Aujourd'hui</button>
+                    <button type="button" @click="bilanRaccourci('semaine')" class="flex-1 text-xs font-semibold py-1.5 rounded-lg bg-[#171E26] border border-[#2A3038] text-[#A8B0B8] active:scale-95">Cette semaine</button>
+                    <button type="button" @click="bilanRaccourci('mois')" class="flex-1 text-xs font-semibold py-1.5 rounded-lg bg-[#171E26] border border-[#2A3038] text-[#A8B0B8] active:scale-95">Ce mois</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[10px] font-semibold text-[#7A8590] mb-1">Du</label>
+                        <input type="date" x-model="bilanDebut"
+                               style="background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.4rem;font-size:.8rem;font-weight:600;color:white;width:100%;">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-semibold text-[#7A8590] mb-1">Au</label>
+                        <input type="date" x-model="bilanFin"
+                               style="background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.4rem;font-size:.8rem;font-weight:600;color:white;width:100%;">
+                    </div>
+                </div>
+
+                <template x-if="bilanDebut && bilanFin">
+                    <div class="bg-[#0F2A1F] border border-[#1F4A38] rounded-xl px-4 py-3 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold text-[#7A8590]" x-text="'📋 Théorique (' + nbCoursesPeriode + ' course' + (nbCoursesPeriode>1?'s':'') + ')'"></span>
+                            <span class="text-sm font-bold text-[#7A8590]" x-text="totalPeriodeTheorique.toFixed(2) + ' €'"></span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-[#34D399]" x-text="'✅ Réel (' + nbCoursesFaitesPeriode + ' faite' + (nbCoursesFaitesPeriode>1?'s':'') + ')'"></span>
+                            <span class="text-lg font-bold text-[#34D399]" x-text="totalPeriodeReel.toFixed(2) + ' €'"></span>
+                        </div>
+                        <template x-if="ajustTotal() > 0">
+                            <div class="flex items-center justify-between pt-1 border-t border-white/10">
+                                <span class="text-[10px] text-[#F4B942]">dont ajustements manuels</span>
+                                <span class="text-[10px] text-[#F4B942]" x-text="'+' + ajustTotal().toFixed(2) + ' €'"></span>
+                            </div>
+                        </template>
+
+                        <!-- Calcul salaire -->
+                        <div class="pt-2 border-t border-white/10 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[11px] font-semibold text-[#A8B0B8] flex-shrink-0">💼 Salaire estimé ×</span>
+                                <input type="number" step="0.001" min="0" max="1" placeholder="0.16"
+                                       x-model="salaireCoeff"
+                                       style="width:5rem;background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.3rem .5rem;font-size:.8rem;font-weight:700;color:#F4B942;text-align:center;">
+                                <span class="text-[11px] text-[#7A8590]">(ex: 0.15, 0.16…)</span>
+                            </div>
+                            <template x-if="salaireCoeff > 0">
+                                <div class="flex items-center justify-between bg-[#0A1A2A] border border-[#1A3A5A] rounded-lg px-3 py-2">
+                                    <span class="text-xs font-semibold text-[#60A5FA]">💰 Mon salaire estimé</span>
+                                    <span class="text-lg font-bold text-[#60A5FA]" x-text="(totalPeriodeReel * salaireCoeff).toFixed(2) + ' €'"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Ajustements manuels -->
+                <div>
+                    <button type="button" @click="ajustOuvert = !ajustOuvert"
+                            class="w-full flex items-center justify-between bg-[#1A1510] border border-[#3A2A10] rounded-xl px-4 py-2.5 text-sm font-bold text-[#F4B942]">
+                        <span>✏️ Ajustements manuels</span>
+                        <span x-text="ajustOuvert ? '▲' : '▼'"></span>
+                    </button>
+                    <template x-if="ajustOuvert">
+                        <div class="bg-[#141920] border border-[#232932] rounded-xl p-3 space-y-3 mt-1">
+                            <p class="text-[10px] text-[#7A8590]">Saisir un montant pour un jour travaillé avant l'app (ex : 1er au 22 juin). S'ajoute au bilan de la période sélectionnée.</p>
+
+                            <!-- Formulaire ajout -->
+                            <div class="flex gap-2 items-end">
+                                <div style="flex:1.2">
+                                    <label class="block text-[10px] font-semibold text-[#7A8590] mb-1">Date</label>
+                                    <input type="date" x-model="ajustForm.date"
+                                           style="background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.4rem;font-size:.8rem;font-weight:600;color:white;width:100%;">
+                                </div>
+                                <div style="flex:1">
+                                    <label class="block text-[10px] font-semibold text-[#7A8590] mb-1">Montant €</label>
+                                    <input type="number" step="0.01" min="0" placeholder="0.00" x-model="ajustForm.montant"
+                                           style="background:#171E26;border:1px solid #2A3038;border-radius:.5rem;padding:.4rem;font-size:.8rem;font-weight:600;color:white;width:100%;">
+                                </div>
+                                <button type="button" @click="ajustAdd()"
+                                        style="background:#F4B942;color:#14181C;font-weight:700;padding:.45rem .9rem;border-radius:.5rem;font-size:.85rem;flex-shrink:0">
+                                    ＋
+                                </button>
+                            </div>
+
+                            <!-- Liste des ajustements existants -->
+                            <template x-if="ajustements.length > 0">
+                                <div class="space-y-1.5">
+                                    <p class="text-[10px] font-bold text-[#7A8590]">Ajustements enregistrés :</p>
+                                    <template x-for="a in ajustements" :key="a.date">
+                                        <div class="flex items-center justify-between bg-[#1A1510] border border-[#3A2A10] rounded-lg px-3 py-2">
+                                            <span class="text-xs text-[#E8E6E1]" x-text="new Date(a.date + 'T12:00:00').toLocaleDateString('fr-FR', {weekday:'short', day:'numeric', month:'short'})"></span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm font-bold text-[#F4B942]" x-text="parseFloat(a.montant).toFixed(2) + ' €'"></span>
+                                                <button type="button" @click="ajustDelete(a.date)" class="text-red-400 text-sm font-bold px-1">✕</button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <div class="flex justify-between pt-1 border-t border-white/10">
+                                        <span class="text-xs font-bold text-[#7A8590]">Total tous ajustements</span>
+                                        <span class="text-sm font-bold text-[#F4B942]" x-text="ajustements.reduce((s,a)=>s+parseFloat(a.montant),0).toFixed(2) + ' €'"></span>
+                                    </div>
+                                </div>
+                            </template>
+                            <template x-if="ajustements.length === 0">
+                                <p class="text-[10px] text-[#7A8590] text-center">Aucun ajustement enregistré.</p>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template x-for="(course, index) in filteredCourses" :key="course.id">
+            <div class="space-y-4">
+
+                <div class="border rounded-2xl p-4 transition-all"
+                     :class="(course.id === geoNextCourseId ? 'ring-2 ring-[#34D399] ' : '') + (course.depotReelle ? 'opacity-60' : '')"
+                     :style="'background-color:' + getColorStyle(course).bg + ';border-color:' + getColorStyle(course).border">
+
+                    <!-- Bandeau prochain patient GPS (visible seulement déplié) -->
+                    <template x-if="course.expanded && course.id === geoNextCourseId && geoTimeToNext !== null">
+                        <div class="mb-3 bg-emerald-900/50 border border-emerald-500 text-emerald-200 text-[11px] font-bold p-2 rounded-xl flex flex-col gap-1">
+                            <span>📍 Prochain patient — <b x-text="geoTimeToNext + ' min'"></b> depuis votre position.</span>
+                            <span x-show="geoHeureDepartConseillee">🚗 Partez avant <b x-text="geoHeureDepartConseillee"></b> pour être à l'heure.</span>
+                        </div>
+                    </template>
+
+                    <!-- Alerte retard -->
+                    <template x-if="course.status === 'retard' && course.typeTrajet === 'aller'">
+                        <div class="mb-3 bg-amber-950/80 border border-amber-500 text-amber-200 text-xs font-bold p-2.5 rounded-xl flex items-center gap-2">
+                            ⚠️ <span><b x-text="course.retardMin"></b> min de retard estimé — Modifier l'heure de départ ou décaler le RDV !</span>
+                        </div>
+                    </template>
+
+                    <!-- Conflit de liaison -->
+                    <template x-if="checkConflict(course, index)">
+                        <div class="mb-3 bg-red-950/90 border border-red-500 text-red-200 text-xs font-bold p-2.5 rounded-xl flex flex-col gap-1 animate-pulse">
+                            <span>🛑 Liaison impossible ! <b x-text="course.tempsLiaison + ' min'"></b> de trajet, temps insuffisant.</span>
+                            <span x-show="course.heureDepartConseillee">🚗 Il fallait partir avant <b x-text="course.heureDepartConseillee"></b> du point précédent.</span>
+                        </div>
+                    </template>
+
+                    <!-- Liaison OK (visible seulement déplié) -->
+                    <template x-if="course.expanded && course.liaisonPossible === true && index > 0">
+                        <div class="mb-3 bg-emerald-950/60 border border-emerald-700 text-emerald-300 text-[11px] font-semibold p-2 rounded-xl flex flex-col gap-1">
+                            <span x-show="!course.pasDeCreneauRetour">✅ Liaison OK : <b x-text="course.tempsLiaison + ' min'"></b> de trajet.</span>
+                            <span x-show="course.pasDeCreneauRetour">🏠 Pas de créneau imposé — <b x-text="course.tempsLiaison + ' min'"></b> de trajet depuis le point précédent.</span>
+                            <span x-show="course.heureDepartConseillee">🚗 Partez avant <b x-text="course.heureDepartConseillee"></b> du point précédent pour être à l'heure.</span>
+                        </div>
+                    </template>
+
+                    <div class="flex justify-between items-start gap-2">
+                        <div class="flex-1 min-w-0">
+                            <!-- En-tête cliquable : toujours visible, compact -->
+                            <div @click="toggleExpand(course)" class="cursor-pointer select-none">
+                                <!-- Badge statut + type + chevron -->
+                                <div class="flex items-center justify-between gap-2 mb-1.5">
+                                    <div class="flex items-center gap-2" style="flex-wrap:wrap;">
+                                        <span class="text-xs font-bold px-2 py-0.5 rounded bg-black/40"
+                                              :style="'color:' + getColorStyle(course).color"
+                                              x-text="getColorStyle(course).label"></span>
+                                        <span class="text-[11px] px-2 py-0.5 rounded bg-white/10 text-white font-medium"
+                                              x-text="course.typeTrajet === 'retour' ? '🏠 RETOUR' : '🏥 ALLER'"></span>
+                                        <span x-show="course.depotReelle" class="text-[11px] px-2 py-0.5 rounded font-bold" style="background:#0F2A1F;color:#34D399">✅ Faite</span>
+                                        <!-- Badge hors-ligne si calcul estimé -->
+                                        <span x-show="course.isOfflineCalc"
+                                              class="text-[10px] px-1.5 py-0.5 rounded font-bold"
+                                              style="background:#2A1805;color:#FBBF24;border:1px solid #D97706">✈️ Estimé</span>
+                                    </div>
+                                    <span class="text-[#7A8590] text-[11px] font-semibold flex-shrink-0"
+                                          x-text="course.expanded ? '▲ Réduire' : '▼ Détails'"></span>
+                                </div>
+
+                                <div class="flex items-center justify-between gap-2">
+                                    <h2 class="text-base font-bold text-white truncate flex items-center gap-1.5">
+                                        <span x-text="course.patient"></span>
+                                        <span x-show="course.dialyse" title="Transport dialyse"
+                                              class="text-[10px] font-bold px-1.5 py-0.5 rounded flex-shrink-0"
+                                              style="background:#1F4A38;color:#34D399">🩺 Dialyse</span>
+                                        <span x-show="course.tarifB2" title="Tarif B2 (caisse n'acceptant pas le majoré)"
+                                              class="text-[10px] font-bold px-1.5 py-0.5 rounded flex-shrink-0"
+                                              style="background:#1A3A5C;color:#60A5FA">💳 B2</span>
+                                    </h2>
+                                    <span class="font-bold text-sm flex-shrink-0 ml-2"
+                                          style="color:#F4B942"
+                                          x-text="course.tarif ? course.tarif.total.toFixed(2) + ' €' : '…'"></span>
+                                </div>
+
+                                <!-- Résumé compact, visible uniquement si replié -->
+                                <template x-if="!course.expanded">
+                                    <p class="text-xs truncate mt-1" style="color:rgba(232,230,225,.75)">
+                                        <span x-text="course.heureDepart || '—'"></span>
+                                        <template x-if="!course.pasDeCreneauRetour">
+                                            <span><span> → </span><span x-text="course.heureRdv || '—'"></span></span>
+                                        </template>
+                                        <span> · </span>
+                                        <span x-text="course.arrivee"></span>
+                                    </p>
+                                </template>
+                            </div>
+
+                            <!-- Pointage horaire réel : prise en charge / démarrage / dépôt (visible seulement déplié) -->
+                            <div x-show="course.expanded" class="space-y-1.5 mt-2" @click.stop>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" @click="markTime(course,'pec')"
+                                            class="flex-1 text-sm font-bold px-3 py-2.5 rounded-lg border active:scale-95 transition-all"
+                                            :style="course.pecReelle ? 'background:#0F2A1F;color:#34D399;border-color:#1F4A38' : 'background:#171E26;color:#A8B0B8;border-color:#2A3038'"
+                                            x-text="course.pecReelle ? '📍 PEC ' + course.pecReelle : '📍 Prise en charge'"></button>
+                                    <template x-if="course.editingPec">
+                                        <input type="time" style="width:6.5rem;padding:.4rem;font-size:12px;border-radius:.5rem"
+                                               :value="course.pecReelle || ''"
+                                               @change="setTimeManuel(course,'pec',$event.target.value)">
+                                    </template>
+                                    <button type="button" @click="toggleEditPec(course)" class="text-[10px] px-1 rounded flex-shrink-0" :style="course.editingPec ? 'color:#34D399' : 'color:#7A8590'">
+                                        <span x-text="course.editingPec ? '✓' : '✏️'"></span>
+                                    </button>
+                                    <button type="button" x-show="course.pecReelle" @click="clearTime(course,'pec')" class="text-[#7A8590] text-base px-2 flex-shrink-0">✕</button>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" @click="markTime(course,'depart')"
+                                            class="flex-1 text-sm font-bold px-3 py-2.5 rounded-lg border active:scale-95 transition-all"
+                                            :style="course.departReel ? 'background:#0F2A1F;color:#34D399;border-color:#1F4A38' : 'background:#171E26;color:#A8B0B8;border-color:#2A3038'"
+                                            x-text="course.departReel ? '🚗 Départ ' + course.departReel : '🚗 Démarrer'"></button>
+                                    <template x-if="course.editingDepart">
+                                        <input type="time" style="width:6.5rem;padding:.4rem;font-size:12px;border-radius:.5rem"
+                                               :value="course.departReel || ''"
+                                               @change="setTimeManuel(course,'depart',$event.target.value)">
+                                    </template>
+                                    <button type="button" @click="toggleEditDepart(course)" class="text-[10px] px-1 rounded flex-shrink-0" :style="course.editingDepart ? 'color:#34D399' : 'color:#7A8590'">
+                                        <span x-text="course.editingDepart ? '✓' : '✏️'"></span>
+                                    </button>
+                                    <button type="button" x-show="course.departReel" @click="clearTime(course,'depart')" class="text-[#7A8590] text-base px-2 flex-shrink-0">✕</button>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" @click="markTime(course,'depot')"
+                                            class="flex-1 text-sm font-bold px-3 py-2.5 rounded-lg border active:scale-95 transition-all"
+                                            :style="course.depotReelle ? 'background:#0F2A1F;color:#34D399;border-color:#1F4A38' : 'background:#171E26;color:#A8B0B8;border-color:#2A3038'"
+                                            x-text="course.depotReelle ? '🏁 Dépôt ' + course.depotReelle : '🏁 Marquer dépôt'"></button>
+                                    <template x-if="course.editingDepot">
+                                        <input type="time" style="width:6.5rem;padding:.4rem;font-size:12px;border-radius:.5rem"
+                                               :value="course.depotReelle || ''"
+                                               @change="setTimeManuel(course,'depot',$event.target.value)">
+                                    </template>
+                                    <button type="button" @click="toggleEditDepot(course)" class="text-[10px] px-1 rounded flex-shrink-0" :style="course.editingDepot ? 'color:#34D399' : 'color:#7A8590'">
+                                        <span x-text="course.editingDepot ? '✓' : '✏️'"></span>
+                                    </button>
+                                    <button type="button" x-show="course.depotReelle" @click="clearTime(course,'depot')" class="text-[#7A8590] text-base px-2 flex-shrink-0">✕</button>
+                                </div>
+                            </div>
+
+                            <!-- Corps détaillé, replié/déplié au tap sur l'en-tête -->
+                            <template x-if="course.expanded">
+                                <div>
+                                    <div class="flex justify-end mt-2 mb-1.5">
+                                        <button @click="switchExistingCourseAddresses(course)"
+                                                class="px-2 py-0.5 bg-black/40 text-[#F4B942] text-[10px] font-bold rounded border border-white/10 active:scale-95 transition-all">
+                                            🔄 Inverser
+                                        </button>
+                                    </div>
+
+                                    <div class="space-y-1 text-xs mb-3" style="color:rgba(232,230,225,.8)">
+                                        <p class="truncate">🏁 <b>Départ :</b> <span x-text="course.depart"></span></p>
+                                        <p class="truncate">🏥 <b>Arrivée :</b> <span x-text="course.arrivee"></span></p>
+                                    </div>
+
+                                    <div class="bg-black/30 rounded-xl p-3 text-xs space-y-1.5 border border-white/5">
+                                        <div class="flex justify-between text-[#A8B0B8]">
+                                            <span x-text="course.isOfflineCalc ? 'Route (estimé ✈️) :' : 'Route (trafic live) :'"></span>
+                                            <span class="font-semibold text-white"
+                                                  x-text="course.travelMin ? course.travelMin + ' min (' + course.km + ' km)' : 'Calcul…'"></span>
+                                        </div>
+                                        <div class="flex justify-between text-[#A8B0B8] pt-0.5">
+                                            <span class="text-yellow-400">⏱️ Prise patient + Départ :</span>
+                                            <span class="font-bold text-yellow-400"
+                                                  x-text="course.heureDepartReel ? course.heureDepartReel + ' (+' + (course.margeMin||10) + 'm)' : '—'"></span>
+                                        </div>
+                                        <div class="flex justify-between text-[#A8B0B8]">
+                                            <span>Arrivée prévue :</span>
+                                            <span class="font-bold text-white text-sm" x-text="course.arriveeEstimee || '—'"></span>
+                                        </div>
+                                        <div class="flex justify-between text-[#A8B0B8] pt-0.5">
+                                            <span class="text-blue-300">🧹 Dépose + Nettoyage :</span>
+                                            <span class="font-bold text-blue-300"
+                                                  x-text="course.heureLiberation ? course.heureLiberation + ' (+' + (course.marginMax||10) + 'm)' : '—'"></span>
+                                        </div>
+                                        <div class="flex justify-between pt-1.5 border-t border-white/10 font-medium">
+                                            <span :style="'color:' + getColorStyle(course).color"
+                                                  x-text="course.typeTrajet === 'retour' ? 'Heure de sortie :' : 'Heure du RDV :'"></span>
+                                            <span class="text-white font-bold"
+                                                  x-text="course.pasDeCreneauRetour ? '🏠 Pas de créneau imposé' : course.heureRdv"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- ═══ Tarification ═══ -->
+                                    <div class="bg-black/30 rounded-xl p-3 text-xs space-y-2 border border-white/5 mt-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[#F4B942] font-bold">💰 Tarif course</span>
+                                            <div class="flex gap-1">
+                                                <button type="button" @click="setForfaitType(course,'dep')"
+                                                        :style="course.forfaitType!=='aggl' && course.forfaitType!=='pec' ? 'background:#F4B942;color:#14181C' : 'background:#171E26;color:#7A8590'"
+                                                        style="padding:.2rem .5rem;font-size:10px;font-weight:700;border-radius:.5rem;">Dép.</button>
+                                                <button type="button" @click="setForfaitType(course,'aggl')"
+                                                        :style="course.forfaitType==='aggl' ? 'background:#F4B942;color:#14181C' : 'background:#171E26;color:#7A8590'"
+                                                        style="padding:.2rem .5rem;font-size:10px;font-weight:700;border-radius:.5rem;">Aggl.</button>
+                                                <button type="button" @click="setForfaitType(course,'pec')"
+                                                        :style="course.forfaitType==='pec' ? 'background:#F4B942;color:#14181C' : 'background:#171E26;color:#7A8590'"
+                                                        style="padding:.2rem .5rem;font-size:10px;font-weight:700;border-radius:.5rem;">PEC</button>
+                                            </div>
+                                        </div>
+                                        <template x-if="course.tarif">
+                                            <div class="space-y-1">
+                                                <div class="flex justify-between text-[#A8B0B8]">
+                                                    <span x-text="course.forfaitType==='aggl' ? 'Forfait agglo.' : course.forfaitType==='pec' ? 'Forfait PEC' : 'Forfait dép.'"></span>
+                                                    <span class="text-white" x-text="course.tarif.forfait.toFixed(2) + ' €'"></span>
+                                                </div>
+                                                <div class="flex justify-between items-center text-[#A8B0B8]">
+                                                    <span class="flex items-center gap-1">
+                                                        <span x-show="!course.editingKm" x-text="'Kilométrique (' + course.tarif.kmFacturables.toFixed(0) + ' km)'"></span>
+                                                        <template x-if="course.editingKm">
+                                                            <span class="flex items-center gap-1">
+                                                                <span>Km parcourus :</span>
+                                                                <input type="number" step="1" min="0"
+                                                                       style="width:4.5rem;padding:.2rem .4rem;font-size:11px;border-radius:.4rem"
+                                                                       :value="course.km"
+                                                                       @change="setKmManuel(course, $event.target.value)"
+                                                                       @click.stop>
+                                                            </span>
+                                                        </template>
+                                                        <button type="button" @click="toggleEditKm(course)" class="text-[10px] px-1 rounded" :style="course.editingKm ? 'color:#34D399' : 'color:#7A8590'">
+                                                            <span x-text="course.editingKm ? '✓' : '✏️'"></span>
+                                                        </button>
+                                                        <button type="button" x-show="course.kmManuel" @click="resetKmAuto(course)"
+                                                                class="text-[10px] px-1 rounded" style="color:#F4B942" title="Revenir au calcul automatique">↺</button>
+                                                        <span x-show="course.kmMemoire && !course.editingKm" class="text-[9px] px-1 py-0.5 rounded font-bold" style="background:#0A1F3A;color:#60B4FF">📌 mémo</span>
+                                                        <span x-show="course.kmManuel && !course.kmMemoire && !course.editingKm" class="text-[9px] px-1 py-0.5 rounded font-bold" style="background:#2A1805;color:#FBBF24">manuel</span>
+                                                    </span>
+                                                    <span class="text-white" x-text="course.tarif.montantKm.toFixed(2) + ' €'"></span>
+                                                </div>
+                                                <div class="flex justify-between text-[#A8B0B8]" x-show="course.tarif.valorisationCourt > 0">
+                                                    <span>Valorisation trajet court</span>
+                                                    <span class="text-white" x-text="course.tarif.valorisationCourt.toFixed(2) + ' €'"></span>
+                                                </div>
+                                                <div class="flex justify-between text-[#A8B0B8]" x-show="course.majNuit">
+                                                    <span>🌙 Majoration nuit</span>
+                                                    <span class="text-white" x-text="course.tarif.majorationNuit.toFixed(2) + ' €'"></span>
+                                                </div>
+                                                <div class="flex justify-between text-[#A8B0B8]" x-show="course.majFerie">
+                                                    <span>📅 Majoration férié</span>
+                                                    <span class="text-white" x-text="course.tarif.majorationFerie.toFixed(2) + ' €'"></span>
+                                                </div>
+                                                <div class="flex justify-between text-[#A8B0B8]" x-show="course.tarif.peage > 0">
+                                                    <span>Péage</span>
+                                                    <span class="text-white" x-text="course.tarif.peage.toFixed(2) + ' €'"></span>
+                                                </div>
+                                                <div class="flex justify-between text-[#A8B0B8]" x-show="course.tarif.supplements > 0">
+                                                    <span>Suppléments</span>
+                                                    <span class="text-white" x-text="course.tarif.supplements.toFixed(2) + ' €'"></span>
+                                                </div>
+                                                <div class="flex justify-between items-center pt-1.5 border-t border-white/10">
+                                                    <span class="text-[#F4B942] font-bold flex items-center gap-1">
+                                                        TOTAL
+                                                        <button type="button" @click="toggleEditTarif(course)" class="text-[10px] px-1 rounded" :style="course.editingTarif ? 'color:#34D399' : 'color:#7A8590'">
+                                                            <span x-text="course.editingTarif ? '✓' : '✏️'"></span>
+                                                        </button>
+                                                        <button type="button" x-show="course.tarifManuel" @click="resetTarifAuto(course)"
+                                                                class="text-[10px] px-1 rounded" style="color:#F4B942" title="Revenir au calcul automatique">↺</button>
+                                                        <span x-show="course.tarifMemoire && !course.editingTarif" class="text-[9px] px-1 py-0.5 rounded font-bold" style="background:#0A1F3A;color:#60B4FF">📌 mémo</span>
+                                                        <span x-show="course.tarifManuel && !course.tarifMemoire && !course.editingTarif" class="text-[9px] px-1 py-0.5 rounded font-bold" style="background:#2A1805;color:#FBBF24">manuel</span>
+                                                    </span>
+                                                    <span x-show="!course.editingTarif" class="text-[#F4B942] font-bold text-sm" x-text="course.tarif.total.toFixed(2) + ' €'"></span>
+                                                    <template x-if="course.editingTarif">
+                                                        <input type="number" step="0.01" min="0"
+                                                               style="width:5.5rem;padding:.2rem .4rem;font-size:12px;border-radius:.4rem;color:#F4B942;font-weight:bold;text-align:right"
+                                                               :value="course.tarif.total.toFixed(2)"
+                                                               @change="setTarifManuel(course, $event.target.value)"
+                                                               @click.stop>
+                                                    </template>
+                                                </div>
+                                                <div class="flex justify-between text-[10px] text-[#7A8590]">
+                                                    <span x-text="'RO 55% : ' + course.tarif.partRO.toFixed(2) + ' €'"></span>
+                                                    <span x-text="'RC 45% : ' + course.tarif.partRC.toFixed(2) + ' €'"></span>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template x-if="!course.tarif">
+                                            <p class="text-[#7A8590] text-[11px]">En attente du calcul de trajet…</p>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Boutons actions -->
+                        <div class="flex flex-col gap-1.5" style="flex-shrink:0">
+                            <button @click="openEditCourse(course)"
+                                    class="p-2 rounded-lg bg-black/20 text-[#F4B942]" title="Modifier">✏️</button>
+                            <button @click="duplicateCourse(course)"
+                                    class="p-2 rounded-lg bg-black/20 text-[#34D399]" title="Dupliquer (retour)">🔁</button>
+                            <button @click="deleteCourse(course.id)"
+                                    class="p-2 rounded-lg bg-black/20 text-red-400" title="Supprimer">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Temps libre entre deux courses -->
+                <template x-if="getFreeTimeBetween(course, index)">
+                    <div class="bg-[#171E26] border border-[#2A3038] rounded-xl px-4 py-2.5 text-center text-xs font-semibold text-[#A8B0B8] flex items-center justify-center gap-2">
+                        <span>⏱️</span>
+                        <span>Vous avez <b class="text-[#F4B942]" x-text="getFreeTimeBetween(course, index)"></b> libre (trajet déduit).</span>
+                    </div>
+                </template>
+
+            </div>
+        </template>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         BOUTON AJOUTER
+    ══════════════════════════════════════════ -->
+    <button @click="showForm = true"
+            class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-[#F4B942] shadow-lg flex items-center justify-center font-bold text-2xl active:scale-95 transition-all z-30"
+            style="color:#14181C">+</button>
+
+    <!-- ── Scanner une fiche mission (OCR) : prend une photo et pré-remplit le formulaire ── -->
+    <input type="file" accept="image/*" x-ref="scanInput"
+           @change="handleScanFile($event)" style="display:none">
+    <button @click="$refs.scanInput.click()"
+            class="fixed bottom-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl active:scale-95 transition-all z-30"
+            style="right:5.5rem;background:#2A3038;border:1px solid #F4B942;color:#F4B942;"
+            title="Scanner une fiche mission (photo ou galerie)">📷</button>
+
+    <!-- ── Overlay pendant la lecture OCR ── -->
+    <div x-show="scanning" x-cloak
+         class="fixed inset-0 z-50 flex flex-col items-center justify-center"
+         style="background:rgba(15,18,22,0.95);">
+        <div style="width:34px;height:34px;border-radius:50%;border:3px solid #2A3038;border-top-color:#F4B942;animation:app-loading-spin .8s linear infinite;"></div>
+        <p class="mt-3 text-sm" style="color:#E8E6E1;">Lecture de la photo… <span x-text="scanProgress"></span>%</p>
+    </div>
+
+    <!-- ── File d'attente des missions détectées sur une photo (plusieurs patients possibles) ── -->
+    <div x-show="ocrMissions.length > 0 && !showForm" x-cloak
+         class="fixed inset-0 z-40 p-4 overflow-y-auto" style="background:#0F1216;">
+        <div class="flex justify-between items-center mb-3">
+            <h2 class="text-lg font-bold" style="color:#F4B942;">
+                📷 <span x-text="ocrMissions.length"></span> mission(s) détectée(s)
+            </h2>
+            <button @click="ocrMissions = []" class="px-3 py-1.5 rounded-xl text-xs" style="background:#2A3038;color:#E8E6E1;">Tout fermer</button>
+        </div>
+        <p class="text-xs mb-3" style="color:#7A8590;">Touche "Vérifier et ajouter" sur chaque mission — tu pourras corriger avant d'enregistrer.</p>
+        <div class="space-y-3">
+            <template x-for="(m, i) in ocrMissions" :key="i">
+                <div class="p-3 rounded-xl" style="background:#171E26;border:1px solid #2A3038;">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-xs font-semibold" style="color:#F4B942;" x-text="m.label"></span>
+                        <span class="text-[10px]" style="color:#7A8590;" x-text="m.typeTrajet === 'retour' ? '🏠 Retour' : '🏥 Aller'"></span>
+                    </div>
+                    <p class="text-sm font-bold mb-1" style="color:#E8E6E1;" x-text="m.patient || '(patient non détecté)'"></p>
+                    <p class="text-[11px]" style="color:#A8B0B8;">
+                        <span x-show="m.heureDepart" x-text="'Prise ' + m.heureDepart"></span>
+                        <span x-show="m.heureRdv" x-text="' · RDV ' + m.heureRdv"></span>
+                    </p>
+                    <p class="text-[11px] mt-1" style="color:#A8B0B8;">↳ <span x-text="m.depart || '(départ ?)'"></span></p>
+                    <p class="text-[11px]" style="color:#A8B0B8;">🏁 <span x-text="m.arrivee || '(arrivée ?)'"></span></p>
+                    <div class="flex gap-2 mt-2">
+                        <button type="button" @click="useOcrMission(i)"
+                                style="flex:1;padding:.5rem;background:#F4B942;color:#14181C;border-radius:.625rem;font-size:.75rem;font-weight:700;">
+                            ✅ Vérifier et ajouter
+                        </button>
+                        <button type="button" @click="discardOcrMission(i)"
+                                style="padding:.5rem .75rem;background:#2A3038;color:#7A8590;border-radius:.625rem;font-size:.75rem;">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         FORMULAIRE AJOUT / ÉDITION
+    ══════════════════════════════════════════ -->
+    <div x-show="showForm"
+         class="fixed inset-0 z-50 p-4 overflow-y-auto"
+         style="background-color:#0F1216;display:none;">
+
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-lg font-bold text-[#F4B942]"
+                x-text="editingId ? '✏️ Modifier le Patient' : '➕ Nouveau Patient'"></h2>
+            <button @click="closeForm()"
+                    class="px-3 py-1.5 bg-[#2A3038] rounded-xl text-xs">Fermer</button>
+        </div>
+
+        <div class="space-y-4">
+
+            <!-- ═══ Résultat du scan photo : à vérifier avant d'enregistrer ═══ -->
+            <div x-show="ocrRawText" x-cloak class="p-3 rounded-xl" style="background:#171E26;border:1px solid #2A3038;">
+                <p class="text-xs font-semibold mb-2" style="color:#F4B942;">📷 Lecture automatique — vérifie et corrige au besoin</p>
+
+                <p class="text-[10px] text-[#7A8590] mb-1" x-show="ocrCandidates.times.length">Heures détectées (touche pour assigner) :</p>
+                <div class="flex flex-wrap gap-2 mb-2">
+                    <template x-for="t in ocrCandidates.times" :key="'d-'+t">
+                        <button type="button" @click="form.heureDepart = t"
+                                style="padding:.25rem .5rem;background:#2A3038;border-radius:.5rem;font-size:.7rem;color:#F4B942;">
+                            ⏰ <span x-text="t"></span> → Prise
+                        </button>
+                    </template>
+                    <template x-for="t in ocrCandidates.times" :key="'r-'+t">
+                        <button type="button" @click="form.heureRdv = t"
+                                style="padding:.25rem .5rem;background:#2A3038;border-radius:.5rem;font-size:.7rem;color:#F4B942;">
+                            ⏰ <span x-text="t"></span> → RDV
+                        </button>
+                    </template>
+                </div>
+
+                <p class="text-[10px] text-[#7A8590] mb-1" x-show="ocrCandidates.addresses.length">Adresses détectées (touche pour assigner) :</p>
+                <div class="flex flex-col gap-1 mb-2">
+                    <template x-for="a in ocrCandidates.addresses" :key="a">
+                        <div class="flex gap-1">
+                            <button type="button" @click="form.depart = a"
+                                    style="flex:1;text-align:left;padding:.25rem .5rem;background:#2A3038;border-radius:.5rem;font-size:.65rem;color:#E8E6E1;">
+                                ↳ Départ: <span x-text="a"></span>
+                            </button>
+                            <button type="button" @click="form.arrivee = a"
+                                    style="flex:1;text-align:left;padding:.25rem .5rem;background:#2A3038;border-radius:.5rem;font-size:.65rem;color:#E8E6E1;">
+                                ↳ Arrivée: <span x-text="a"></span>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                <p class="text-[10px] text-[#7A8590]" x-show="ocrCandidates.km">Km détecté : <span x-text="ocrCandidates.km"></span> km (à reporter si besoin dans le trajet une fois calculé)</p>
+                <p class="text-[10px] text-[#7A8590]" x-show="ocrCandidates.tag">Type détecté : <span x-text="ocrCandidates.tag"></span></p>
+
+                <details class="mt-2">
+                    <summary class="text-[10px] cursor-pointer" style="color:#7A8590;">Voir le texte brut détecté par l'OCR</summary>
+                    <pre class="text-[10px] whitespace-pre-wrap mt-1" style="color:#7A8590;" x-text="ocrRawText"></pre>
+                </details>
+            </div>
+
+            <!-- Type de transport -->
+            <div>
+                <label class="block text-xs font-semibold text-[#A8B0B8] mb-1.5">Type de Transport</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" @click="form.typeTrajet = 'aller'"
+                            :style="form.typeTrajet === 'aller' ? 'background:#2A3038;border-color:#F4B942;color:white' : 'background:#171E26;border-color:transparent;color:#7A8590'"
+                            style="padding:.625rem;font-size:.75rem;font-weight:700;border-radius:.75rem;border:1px solid;transition:all .15s;text-align:center;">
+                        🏥 Aller (Vers RDV)
+                    </button>
+                    <button type="button" @click="form.typeTrajet = 'retour'"
+                            :style="form.typeTrajet === 'retour' ? 'background:#2A3038;border-color:#F4B942;color:white' : 'background:#171E26;border-color:transparent;color:#7A8590'"
+                            style="padding:.625rem;font-size:.75rem;font-weight:700;border-radius:.75rem;border:1px solid;transition:all .15s;text-align:center;">
+                        🏠 Retour (Sortie Hôpital)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Nom patient avec autocomplétion -->
+            <div class="relative">
+                <label class="block text-xs font-semibold text-[#A8B0B8] mb-1">Nom du Patient</label>
+                <input type="text" required x-model="form.patient"
+                       @input="searchSavedPatient();
+                               if(!form.dialyseManuel) form.dialyse = savedDialysePatients.includes(form.patient.trim());
+                               if(!form.tarifB2Manuel) form.tarifB2 = savedB2Patients.includes(form.patient.trim())"
+                       placeholder="Ex: M. Martin Jean">
+                <div x-show="patientSuggestions.length > 0"
+                     class="absolute z-50 left-0 right-0 mt-1 bg-[#242A33] border border-[#2A3038] rounded-xl max-h-40 overflow-y-auto shadow-xl">
+                    <template x-for="p in patientSuggestions">
+                        <button type="button"
+                                @click="form.patient = p; patientSuggestions = [];
+                                        if(!form.dialyseManuel) form.dialyse = savedDialysePatients.includes(p);
+                                        if(!form.tarifB2Manuel) form.tarifB2 = savedB2Patients.includes(p)"
+                                style="display:block;width:100%;text-align:left;padding:.625rem .75rem;font-size:.75rem;color:#E8E6E1;border-bottom:1px solid #2A3038;"
+                                x-text="p"></button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Transport dialyse : purement informatif (type de transport), n'influe plus sur le tarif -->
+            <label class="flex items-center gap-2 text-xs font-semibold text-[#A8B0B8] mt-1 mb-1">
+                <input type="checkbox" x-model="form.dialyse" @change="form.dialyseManuel = true">
+                <span>🩺 Transport dialyse</span>
+            </label>
+
+            <!-- Tarif B2 : caisse du patient n'acceptant pas le tarif majoré géoloc (ex: MGEN).
+                 Indépendant du type de transport — s'applique à tous les trajets de ce patient. -->
+            <label class="flex items-center gap-2 text-xs font-semibold text-[#A8B0B8] mt-1 mb-1">
+                <input type="checkbox" x-model="form.tarifB2" @change="form.tarifB2Manuel = true">
+                <span>💳 Tarif B2 (caisse n'acceptant pas le majoré, ex: MGEN)</span>
+            </label>
+
+            <!-- Marges -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-[#A8B0B8] mb-1">Marge avant prise (min)</label>
+                    <input type="number" x-model.number="form.margeMin" min="0" max="30">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-[#A8B0B8] mb-1">Marge après dépose (min)</label>
+                    <input type="number" x-model.number="form.marginMax" min="0" max="30">
+                </div>
+            </div>
+
+            <!-- Heures -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-[#A8B0B8] mb-1"
+                           x-text="form.typeTrajet === 'retour' ? 'Heure de récupération' : 'Heure de Prise'"></label>
+                    <input type="time" required x-model="form.heureDepart"
+                           @change="if(!form.majNuitManuel) form.majNuit = isNightTime(form.heureDepart || form.heureRdv);
+                                    if(!form.majFerieManuel) form.majFerie = isFerieCourse({date: selectedDate, heureDepart: form.heureDepart, heureRdv: form.heureRdv})">
+                </div>
+                <div x-show="!form.pasDeCreneauRetour">
+                    <label class="block text-xs font-semibold text-[#A8B0B8] mb-1"
+                           x-text="form.typeTrajet === 'retour' ? 'Heure de Sortie' : 'Heure RDV'"></label>
+                    <input type="time" :required="!form.pasDeCreneauRetour" x-model="form.heureRdv">
+                </div>
+            </div>
+
+            <!-- Cas particulier sans créneau imposé : retour maison (on récupère la
+                 personne quand elle est prête) ou sortie d'hospitalisation pour un aller
+                 (pas d'heure d'arrivée fixe, juste l'heure de prise en charge) -->
+            <label class="flex items-center gap-2 text-xs font-semibold text-[#A8B0B8] mt-1 mb-1">
+                <input type="checkbox" x-model="form.pasDeCreneauRetour" @change="if(form.pasDeCreneauRetour) form.heureRdv = form.heureDepart">
+                <span x-text="form.typeTrajet === 'retour' ? '🏠 Retour maison — pas de créneau imposé' : '🏠 Sortie d\'hospitalisation — pas d\'heure d\'arrivée'"></span>
+            </label>
+
+            <!-- Adresse départ -->
+            <div class="relative">
+                <label class="block text-xs font-semibold text-[#A8B0B8] mb-1">Adresse de Départ</label>
+                <input type="text" required x-model="form.depart"
+                       @input.debounce.400ms="searchAddress(form.depart, 'depart')"
+                       placeholder="Ex: 12 rue des Roses, Molsheim">
+                <div x-show="suggestionsDepart.length > 0"
+                     class="absolute z-50 left-0 right-0 mt-1 bg-[#242A33] border border-[#2A3038] rounded-xl max-h-48 overflow-y-auto shadow-xl">
+                    <template x-for="s in suggestionsDepart">
+                        <button type="button" @click="selectAddress(s, 'depart')"
+                                style="display:block;width:100%;text-align:left;padding:.625rem .75rem;font-size:.75rem;color:#E8E6E1;border-bottom:1px solid #2A3038;"
+                                x-text="(s.isFavorite ? '⭐ ' : '') + s.label"></button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Bouton inverser -->
+            <div class="flex justify-center" style="margin-top:-.25rem;margin-bottom:-.25rem">
+                <button type="button" @click="switchAddresses()"
+                        style="padding:.375rem 1rem;background:#2A3038;color:#F4B942;border-radius:.75rem;font-size:.75rem;font-weight:700;border:1px solid #3F4754;display:flex;align-items:center;gap:.375rem;">
+                    🔄 Inverser Départ et Arrivée
+                </button>
+            </div>
+
+            <!-- Adresse arrivée -->
+            <div class="relative">
+                <label class="block text-xs font-semibold text-[#A8B0B8] mb-1">Adresse d'Arrivée</label>
+                <input type="text" required x-model="form.arrivee"
+                       @input.debounce.400ms="searchAddress(form.arrivee, 'arrivee')"
+                       placeholder="Ex: GHSO Sélestat, urgences">
+                <div x-show="suggestionsArrivee.length > 0"
+                     class="absolute z-50 left-0 right-0 mt-1 bg-[#242A33] border border-[#2A3038] rounded-xl max-h-48 overflow-y-auto shadow-xl">
+                    <template x-for="s in suggestionsArrivee">
+                        <button type="button" @click="selectAddress(s, 'arrivee')"
+                                style="display:block;width:100%;text-align:left;padding:.625rem .75rem;font-size:.75rem;color:#E8E6E1;border-bottom:1px solid #2A3038;"
+                                x-text="(s.isFavorite ? '⭐ ' : '') + s.label"></button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- ═══ Options de tarification ═══ -->
+            <div class="border-t border-[#2A3038] pt-4">
+                <label class="block text-xs font-semibold text-[#F4B942] mb-2">💰 Tarification</label>
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <button type="button" @click="form.majNuit = !form.majNuit; form.majNuitManuel = true"
+                            :style="form.majNuit ? 'background:#2A3038;border-color:#F4B942;color:white' : 'background:#171E26;border-color:transparent;color:#7A8590'"
+                            style="padding:.625rem;font-size:.75rem;font-weight:700;border-radius:.75rem;border:1px solid;text-align:center;">
+                        🌙 Majoration nuit
+                    </button>
+                    <button type="button" @click="form.majFerie = !form.majFerie; form.majFerieManuel = true"
+                            :style="form.majFerie ? 'background:#2A3038;border-color:#F4B942;color:white' : 'background:#171E26;border-color:transparent;color:#7A8590'"
+                            style="padding:.625rem;font-size:.75rem;font-weight:700;border-radius:.75rem;border:1px solid;text-align:center;">
+                        📅 Dimanche / Férié
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-[#A8B0B8] mb-1">Péage (€)</label>
+                        <input type="number" step="0.01" min="0" x-model.number="form.peage" placeholder="0.00">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-[#A8B0B8] mb-1">Suppléments (€)</label>
+                        <input type="number" step="0.01" min="0" x-model.number="form.supplements" placeholder="0.00">
+                    </div>
+                </div>
+                <p class="text-[10px] text-[#7A8590] mt-2">Le forfait (départemental / agglomération) et la majoration nuit (20h–8h) sont détectés automatiquement ; le prix est recalculé dès que le trajet est connu.</p>
+            </div>
+
+            <!-- Bouton valider -->
+            <button type="button"
+                    @click="editingId ? updateCourse() : addCourse()"
+                    :disabled="!form.patient || !form.heureDepart || (!form.heureRdv && !form.pasDeCreneauRetour) || !form.depart || !form.arrivee"
+                    class="btn-primary"
+                    x-text="editingId ? 'Enregistrer les modifications' : 'Ajouter à l\'agenda'">
+            </button>
+        </div>
+    </div>
+
+</div><!-- /x-data -->
+
+<!-- ══════════════════════════════════════════
+     ALPINE.JS — chargé depuis le CDN
+══════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js" defer></script>
+
+<!-- ══════════════════════════════════════════
+     LOGIQUE APPLICATIVE
+══════════════════════════════════════════ -->
+<script>
+/* ─── Détection connectivité ─── */
+function updateOnlineStatus(){
+    document.body.classList.toggle('is-offline', !navigator.onLine);
+}
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
+
+/* ─── Service Worker (cache offline + PWA installable) ─── */
+if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+
+/* ─── Cache coordonnées persistant ─── */
+const GEO_CACHE_KEY = 'ambulances_geocache_v2';
+function loadGeoCache(){
+    try{ return JSON.parse(localStorage.getItem(GEO_CACHE_KEY)||'{}'); }
+    catch(e){ return {}; }
+}
+function saveGeoCache(cache){
+    try{ localStorage.setItem(GEO_CACHE_KEY, JSON.stringify(cache)); }
+    catch(e){}
+}
+
+/* ─── Application principale ─── */
+function ambulanceApp(){
+    return {
+        courses: [],
+        selectedDate: (() => {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        })(),
+        showForm: false,
+        editingId: null,
+        isCollapsed: false,
+        lastScrollTop: 0,
+        bilanOuvert: false,
+        bilanDebut: '',
+        bilanFin: '',
+        calcOuvert: false,
+        calcKm: '',
+        calcForfait: 'dep',
+        calcTarifB2: false,
+        calcNuit: false,
+        calcFerie: false,
+        calcResult: null,
+        calcModeGeoloc: false,
+        calcDepart: '',
+        calcArrivee: '',
+        calcCoordsDepart: null,
+        calcCoordsArrivee: null,
+        calcSuggestionsDepart: [],
+        calcSuggestionsArrivee: [],
+        calcLoadingRoute: false,
+        scanning: false,
+        scanProgress: 0,
+        ocrRawText: '',
+        ocrCandidates: { times: [], addresses: [], km: null, tag: null },
+        ocrMissions: [],
+        form: { patient:'', heureDepart:'', heureRdv:'', depart:'', arrivee:'', typeTrajet:'aller', margeMin:10, marginMax:10, majNuit:false, majNuitManuel:false, majFerie:false, majFerieManuel:false, peage:0, supplements:0, pasDeCreneauRetour:false, dialyse:false, dialyseManuel:false, tarifB2:false, tarifB2Manuel:false },
+        notifEnabled: true,
+        notifSoonId: null,
+        ajustements: [],
+        ajustOuvert: false,
+        ajustForm: { date: '', montant: '' },
+        salaireCoeff: '',
+        suggestionsDepart: [],
+        suggestionsArrivee: [],
+        patientSuggestions: [],
+        savedPatients: [],
+        savedDialysePatients: [],
+        savedB2Patients: [],
+        totalReelOverrides: {},
+        editingTotalReel: false,
+        totalReelInput: '',
+        savedAddresses: [],        // historique des adresses utilisées (label + coords)
+        savedKmTrajets: {},        // km mémorisés par trajet : clé "depart||arrivee" → km
+        savedTarifTrajets: {},     // tarif mémorisé par trajet : clé "depart||arrivee" → total €
+        coordsCache: {},
+        persistentGeoCache: {},
+        myPosition: null,
+        geoStatus: 'checking',
+        geoWatchId: null,
+        geoTimeToNext: null,
+        geoNextCourseId: null,
+        geoHeureDepartConseillee: null,
+
+        /* ══ INIT ══ */
+        init(){
+            this.courses = JSON.parse(localStorage.getItem('ambulances_courses_v9') || '[]');
+            this.ajustements = JSON.parse(localStorage.getItem('ambulances_ajustements_v1') || '[]');
+            this.courses.forEach(c => {
+                if(c.departReel === undefined) c.departReel = null;
+                if(c.retardMin === undefined) c.retardMin = 0;
+                if(c.heureDepartConseillee === undefined) c.heureDepartConseillee = null;
+                if(c.editingKm === undefined) c.editingKm = false;
+                if(c.kmManuel === undefined) c.kmManuel = false;
+                if(c.pasDeCreneauRetour === undefined) c.pasDeCreneauRetour = (c.heureRdv===c.heureDepart);
+            });
+            this.savedPatients = JSON.parse(localStorage.getItem('ambulances_patients_history') || '[]');
+            this.savedDialysePatients = JSON.parse(localStorage.getItem('ambulances_dialyse_patients') || '[]');
+            // ── Seed patients dialyse connus (confirmés par captures d'écran du logiciel officiel) ──
+            // N'écrase jamais la liste existante, ne fait qu'ajouter les noms manquants.
+            let dialysePatientsInjectes = false;
+            this.SEED_DIALYSE_PATIENTS.forEach(nom => {
+                if(!this.savedDialysePatients.includes(nom)){
+                    this.savedDialysePatients.push(nom);
+                    dialysePatientsInjectes = true;
+                }
+            });
+            if(dialysePatientsInjectes){
+                localStorage.setItem('ambulances_dialyse_patients', JSON.stringify(this.savedDialysePatients));
+            }
+            this.savedB2Patients = JSON.parse(localStorage.getItem('ambulances_b2_patients') || '[]');
+            this.totalReelOverrides = JSON.parse(localStorage.getItem('ambulances_total_reel_overrides') || '{}');
+            // ── Seed patients tarif B2 connus (caisse n'acceptant pas le majoré) ──
+            let b2PatientsInjectes = false;
+            this.SEED_B2_PATIENTS.forEach(nom => {
+                if(!this.savedB2Patients.includes(nom)){
+                    this.savedB2Patients.push(nom);
+                    b2PatientsInjectes = true;
+                }
+            });
+            if(b2PatientsInjectes){
+                localStorage.setItem('ambulances_b2_patients', JSON.stringify(this.savedB2Patients));
+            }
+            this.savedAddresses = JSON.parse(localStorage.getItem('ambulances_adresses_history') || '[]');
+            this.savedKmTrajets = JSON.parse(localStorage.getItem('ambulances_km_trajets') || '{}');
+            this.savedTarifTrajets = JSON.parse(localStorage.getItem('ambulances_tarif_trajets') || '{}');
+            // ── Injection de la base kilométrique de référence (trajets fréquents) ──
+            // N'écrase jamais un trajet déjà mémorisé (ex : corrigé manuellement par
+            // l'utilisateur) — ne comble que les trajets encore absents de la mémoire.
+            let baseKmInjectee = false;
+            Object.keys(this.BASE_KM_TRAJETS).forEach(k => {
+                if(this.savedKmTrajets[k] === undefined){
+                    this.savedKmTrajets[k] = Math.round(this.BASE_KM_TRAJETS[k]);
+                    baseKmInjectee = true;
+                }
+            });
+            if(baseKmInjectee){
+                localStorage.setItem('ambulances_km_trajets', JSON.stringify(this.savedKmTrajets));
+            }
+            // ── Arrondi des km à l'entier (plus de virgules type 3,5 ou 23,65) ──
+            // S'applique à la base de km mémorisée par trajet ET aux courses déjà enregistrées,
+            // pour que la « base kilométrique » soit toujours en chiffres ronds, une bonne fois
+            // pour toutes.
+            let kmArrondiModifie = false;
+            Object.keys(this.savedKmTrajets).forEach(k => {
+                const arrondi = Math.round(this.savedKmTrajets[k]);
+                if(this.savedKmTrajets[k] !== arrondi){ this.savedKmTrajets[k] = arrondi; kmArrondiModifie = true; }
+            });
+            this.courses.forEach(c => {
+                if(typeof c.km === 'number'){
+                    const arrondi = Math.round(c.km);
+                    if(c.km !== arrondi){ c.km = arrondi; kmArrondiModifie = true; }
+                }
+            });
+            // ── Application rétroactive de la base/mémoire de km aux courses déjà enregistrées ──
+            // Si le trajet (adresse départ → adresse arrivée) d'une course correspond à un
+            // trajet déjà connu (mémorisé ou issu de BASE_KM_TRAJETS), on aligne son km dessus.
+            // Un vrai km saisi manuellement (kmManuel && !kmMemoire) n'est jamais touché.
+            this.courses.forEach(c => {
+                if(!c.depart || !c.arrivee) return;
+                if(c.kmManuel && !c.kmMemoire) return; // km saisi à la main directement → intouchable
+                const trajKey = (c.depart + '||' + c.arrivee).toLowerCase().trim();
+                const kmConnu = this.savedKmTrajets[trajKey];
+                if(kmConnu !== undefined && c.km !== kmConnu){
+                    c.km = kmConnu;
+                    c.kmManuel = true;
+                    c.kmMemoire = true;
+                    kmArrondiModifie = true;
+                }
+            });
+            if(kmArrondiModifie){
+                localStorage.setItem('ambulances_km_trajets', JSON.stringify(this.savedKmTrajets));
+            }
+            // Migration : injecter dans savedKmTrajets les km manuels déjà saisis dans les courses existantes
+            let kmTrajetsModifie = false;
+            this.courses.forEach(c => {
+                if(c.kmManuel && c.km && c.depart && c.arrivee){
+                    const trajKey = (c.depart + '||' + c.arrivee).toLowerCase().trim();
+                    if(this.savedKmTrajets[trajKey] === undefined){
+                        this.savedKmTrajets[trajKey] = c.km;
+                        kmTrajetsModifie = true;
+                    }
+                }
+                if(c.kmMemoire === undefined) c.kmMemoire = false;
+                // Migration tarif manuel
+                if(c.tarifManuel && c.tarifManuelValeur && c.depart && c.arrivee){
+                    const trajKey = (c.depart + '||' + c.arrivee).toLowerCase().trim();
+                    if(this.savedTarifTrajets[trajKey] === undefined){
+                        this.savedTarifTrajets[trajKey] = c.tarifManuelValeur;
+                        kmTrajetsModifie = true;
+                    }
+                }
+                if(c.tarifManuel === undefined) c.tarifManuel = false;
+                if(c.tarifMemoire === undefined) c.tarifMemoire = false;
+                if(c.editingTarif === undefined) c.editingTarif = false;
+            });
+            if(kmTrajetsModifie){
+                localStorage.setItem('ambulances_km_trajets', JSON.stringify(this.savedKmTrajets));
+                localStorage.setItem('ambulances_tarif_trajets', JSON.stringify(this.savedTarifTrajets));
+            }
+            // ── Migration : détection dialyse sur les courses déjà enregistrées ──
+            // Les courses créées avant l'ajout de cette fonctionnalité n'ont pas le champ
+            // "dialyse". On l'initialise selon le patient (liste savedDialysePatients),
+            // sans jamais écraser une valeur déjà définie manuellement par la suite.
+            this.courses.forEach(c => {
+                if(c.dialyse === undefined){
+                    c.dialyse = this.savedDialysePatients.includes((c.patient||'').trim());
+                }
+                if(c.dialyseManuel === undefined) c.dialyseManuel = false;
+            });
+            // ── Migration : détection tarif B2 sur les courses déjà enregistrées ──
+            // Indépendant de "dialyse" : basé sur la caisse du patient (liste savedB2Patients),
+            // sans jamais écraser une valeur déjà définie manuellement par la suite.
+            this.courses.forEach(c => {
+                if(c.tarifB2 === undefined){
+                    c.tarifB2 = this.savedB2Patients.includes((c.patient||'').trim());
+                }
+                if(c.tarifB2Manuel === undefined) c.tarifB2Manuel = false;
+            });
+            // ── Recalcul rétroactif des tarifs (correctif barème SEFI/géoloc du 11/07/2026) ──
+            // Recalcule le tarif de TOUTES les courses enregistrées (passées et à venir, pas
+            // seulement celles du jour affiché), pour que la correction s'applique partout sans
+            // rien avoir à ressaisir. Seuls les tarifs 100% automatiques sont recalculés :
+            // un tarif saisi manuellement ou mémorisé pour un trajet (prix fixe connu) est
+            // toujours respecté et n'est jamais écrasé par cette mise à jour.
+            this.courses.forEach(c => {
+                if(c.forfaitType !== 'pec' && !c.forfaitTypeManuel){
+                    c.forfaitType = (this.isAgglomeration(c.depart) && this.isAgglomeration(c.arrivee)) ? 'aggl' : 'dep';
+                }
+                if(!c.majNuitManuel){
+                    c.majNuit = this.isNightTimeCourse(c);
+                }
+                if(!c.majFerieManuel){
+                    c.majFerie = this.isFerieCourse(c);
+                }
+                c.tarif = this.computeTarif(c);
+                if(c.tarifManuel && !c.tarifMemoire){
+                    if(c.tarifManuelValeur){
+                        c.tarif.total = c.tarifManuelValeur;
+                        c.tarif.partRO = Math.round(c.tarif.total * this.TARIF.partRO * 100) / 100;
+                        c.tarif.partRC = Math.round((c.tarif.total - c.tarif.partRO) * 100) / 100;
+                    }
+                } else {
+                    const trajKey = (c.depart + '||' + c.arrivee).toLowerCase().trim();
+                    const tarifMemorise = this.savedTarifTrajets[trajKey];
+                    if(tarifMemorise !== undefined){
+                        c.tarif.total = tarifMemorise;
+                        c.tarif.partRO = Math.round(tarifMemorise * this.TARIF.partRO * 100) / 100;
+                        c.tarif.partRC = Math.round((tarifMemorise - c.tarif.partRO) * 100) / 100;
+                        c.tarifManuel = true;
+                        c.tarifMemoire = true;
+                        c.tarifManuelValeur = tarifMemorise;
+                    }
+                }
+            });
+            this.save();
+            this.persistentGeoCache = loadGeoCache();
+            // Recharge le cache d'adresses en mémoire depuis le localStorage
+            this.coordsCache = { ...this.persistentGeoCache };
+            this.recalculateAllForDay();
+            this.startGeolocation();
+            setInterval(() => this.updateTimeToNextCourse(), 120000);
+            setInterval(() => this.checkAndNotifyUpcomingCourses(), 60000);
+            this.requestNotificationPermission();
+        },
+
+        /* ══ NOTIFICATIONS ══ */
+        requestNotificationPermission(){
+            if('Notification' in window && Notification.permission === 'default'){
+                Notification.requestPermission();
+            }
+        },
+        checkAndNotifyUpcomingCourses(){
+            if(!('Notification' in window)) return;
+            if(!this.notifEnabled || Notification.permission !== 'granted') return;
+            const todayStr = this.todayLocal();
+            if(this.selectedDate !== todayStr) return;
+            const nowMins = new Date().getHours()*60 + new Date().getMinutes();
+            this.filteredCourses.forEach(course => {
+                const [h,m] = course.heureDepart.split(':').map(Number);
+                const minutesUntil = (h*60+m) - nowMins;
+                if(minutesUntil === 15 && this.notifSoonId !== course.id){
+                    this.notifSoonId = course.id;
+                    new Notification('Départ ambulancier', {
+                        body: `Départ dans 15 min pour ${course.patient}.`,
+                        tag: 'ambulance-' + course.id
+                    });
+                }
+            });
+        },
+
+        /* ══ GPS ══ */
+        startGeolocation(){
+            if(!('geolocation' in navigator)){ this.geoStatus = 'unsupported'; return; }
+            this.geoWatchId = navigator.geolocation.watchPosition(
+                (pos) => {
+                    this.myPosition = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+                    this.geoStatus = 'ok';
+                    this.updateTimeToNextCourse();
+                },
+                () => { this.geoStatus = 'denied'; this.myPosition = null; },
+                { enableHighAccuracy: true, maximumAge: 15000, timeout: 10000 }
+            );
+        },
+        async updateTimeToNextCourse(){
+            if(!this.myPosition) return;
+            const list = this.filteredCourses;
+            if(!list.length){ this.geoTimeToNext=null; this.geoNextCourseId=null; this.geoHeureDepartConseillee=null; return; }
+            const todayStr = this.todayLocal();
+            if(this.selectedDate !== todayStr){ this.geoTimeToNext=null; this.geoNextCourseId=null; this.geoHeureDepartConseillee=null; return; }
+            const nowMins = new Date().getHours()*60 + new Date().getMinutes();
+            const next = list.find(c => {
+                const [h,m] = c.heureDepart.split(':').map(Number);
+                return (h*60+m) >= nowMins;
+            });
+            if(!next || !next.coordsDepart){ this.geoTimeToNext=null; this.geoNextCourseId=null; this.geoHeureDepartConseillee=null; return; }
+            const t = await this.getRouteTime(this.myPosition, next.coordsDepart);
+            this.geoTimeToNext = t;
+            this.geoNextCourseId = next.id;
+            // Heure à laquelle quitter sa position actuelle pour arriver à l'heure
+            // de prise en charge prévue, avec 5 min de marge de sécurité.
+            if(t !== null){
+                const [hD,mD] = next.heureDepart.split(':').map(Number);
+                const cibleMins = hD*60+mD;
+                const departMins = cibleMins - t - 5;
+                this.geoHeureDepartConseillee = this.minsToTime(((departMins%1440)+1440)%1440);
+            } else {
+                this.geoHeureDepartConseillee = null;
+            }
+        },
+
+        /* ══ FILTRES ══ */
+        get filteredCourses(){
+            return this.courses
+                .filter(c => c.date === this.selectedDate)
+                .sort((a,b) => a.heureDepart.localeCompare(b.heureDepart));
+        },
+
+        get totalJourTheorique(){
+            return this.filteredCourses.reduce((sum, c) => sum + (c.tarif ? c.tarif.total : 0), 0);
+        },
+
+        get totalJourReelCalcule(){
+            return this.filteredCourses
+                .filter(c => !!c.depotReelle)
+                .reduce((sum, c) => sum + (c.tarif ? c.tarif.total : 0), 0);
+        },
+
+        get totalJourReel(){
+            const override = this.totalReelOverrides[this.selectedDate];
+            return override !== undefined ? override : this.totalJourReelCalcule;
+        },
+
+        get totalReelEstManuel(){
+            return this.totalReelOverrides[this.selectedDate] !== undefined;
+        },
+
+        // Corrige à la main le "Total réel (fait)" du jour affiché, sans toucher aux courses
+        // ni à leurs tarifs individuels — comme le km/tarif manuel sur une course, mais au
+        // niveau du total de la journée.
+        toggleEditTotalReel(){
+            this.editingTotalReel = !this.editingTotalReel;
+            if(this.editingTotalReel){
+                this.totalReelInput = this.totalJourReel.toFixed(2);
+            }
+        },
+        setTotalReelManuel(){
+            const val = parseFloat(this.totalReelInput);
+            if(!isNaN(val)){
+                this.totalReelOverrides[this.selectedDate] = val;
+                localStorage.setItem('ambulances_total_reel_overrides', JSON.stringify(this.totalReelOverrides));
+            }
+            this.editingTotalReel = false;
+        },
+        clearTotalReelManuel(){
+            delete this.totalReelOverrides[this.selectedDate];
+            localStorage.setItem('ambulances_total_reel_overrides', JSON.stringify(this.totalReelOverrides));
+            this.editingTotalReel = false;
+        },
+
+        /* ══ BILAN SUR PÉRIODE LIBRE (jour, semaine, mois, ou plage personnalisée) ══ */
+        get coursesPeriode(){
+            if(!this.bilanDebut || !this.bilanFin) return [];
+            return this.courses.filter(c => c.date >= this.bilanDebut && c.date <= this.bilanFin);
+        },
+
+        get totalPeriodeTheorique(){
+            const courses = this.coursesPeriode.reduce((sum, c) => sum + (c.tarif ? c.tarif.total : 0), 0);
+            const ajust = this.ajustements
+                .filter(a => a.date >= this.bilanDebut && a.date <= this.bilanFin)
+                .reduce((sum, a) => sum + (parseFloat(a.montant) || 0), 0);
+            return courses + ajust;
+        },
+
+        get totalPeriodeReel(){
+            const courses = this.coursesPeriode
+                .filter(c => !!c.depotReelle)
+                .reduce((sum, c) => sum + (c.tarif ? c.tarif.total : 0), 0);
+            const ajust = this.ajustements
+                .filter(a => a.date >= this.bilanDebut && a.date <= this.bilanFin)
+                .reduce((sum, a) => sum + (parseFloat(a.montant) || 0), 0);
+            return courses + ajust;
+        },
+
+        get nbCoursesPeriode(){
+            return this.coursesPeriode.length;
+        },
+
+        get nbCoursesFaitesPeriode(){
+            return this.coursesPeriode.filter(c => !!c.depotReelle).length;
+        },
+
+        // Raccourcis pour pré-remplir rapidement la période sans taper les dates
+        calcRapide(){
+            const km = parseFloat(this.calcKm);
+            if(isNaN(km) || km <= 0){ this.calcResult = null; return; }
+            const t = this.calcTarifB2 ? this.TARIF_B2 : this.TARIF;
+            const tKmMaj = this.TARIF; // tarif km + % de majoration : communs aux deux barèmes
+            // 1. Forfait
+            const forfait = this.calcForfait === 'aggl' ? t.forfaitAgglomeration
+                          : this.calcForfait === 'pec'  ? t.forfaitPriseEnCharge
+                          : t.forfaitDepartemental;
+            // 2. Km facturables : 3 premiers inclus sauf en PEC (0 inclus)
+            const kmInclus = this.calcForfait === 'pec' ? 0 : 3;
+            const kmFact = Math.max(0, km - kmInclus);
+            const montantKm = Math.round(kmFact * tKmMaj.tarifKm * 100) / 100;
+            // 3. Valorisation trajet court
+            let valorisation = 0;
+            for(const v of t.valorisationCourt){ if(km <= v.max){ valorisation = v.montant; break; } }
+            // 4. Majoration — arrondi séparé sur chaque poste comme computeTarif / SEFI
+            const pct = this.calcFerie ? tKmMaj.majorationFerieJourPct
+                      : this.calcNuit  ? tKmMaj.majorationNuitPct : 0;
+            const majoForfait = Math.round(forfait * pct * 100) / 100;
+            const majoKm      = Math.round(montantKm * pct * 100) / 100;
+            const majoValo    = Math.round(valorisation * pct * 100) / 100;
+            const majoration  = Math.round((majoForfait + majoKm + majoValo) * 100) / 100;
+            // 5. Total
+            const total = Math.round((forfait + montantKm + valorisation + majoration) * 100) / 100;
+            this.calcResult = {
+                forfait: forfait + majoForfait,
+                km: montantKm + majoKm,
+                valorisation: valorisation + majoValo,
+                total,
+                ro: Math.round(total * t.partRO * 100) / 100,
+                rc: Math.round((total - Math.round(total * t.partRO * 100) / 100) * 100) / 100
+            };
+        },
+
+        bilanRaccourci(type){
+            const today = new Date();
+            const fmt = d => this.todayLocal(d);
+            if(type === 'jour'){
+                this.bilanDebut = fmt(today);
+                this.bilanFin = fmt(today);
+            } else if(type === 'semaine'){
+                // Lundi à dimanche de la semaine en cours
+                const jourSemaine = (today.getDay() + 6) % 7; // 0=lundi ... 6=dimanche
+                const lundi = new Date(today);
+                lundi.setDate(today.getDate() - jourSemaine);
+                const dimanche = new Date(lundi);
+                dimanche.setDate(lundi.getDate() + 6);
+                this.bilanDebut = fmt(lundi);
+                this.bilanFin = fmt(dimanche);
+            } else if(type === 'mois'){
+                const premier = new Date(today.getFullYear(), today.getMonth(), 1);
+                const dernier = new Date(today.getFullYear(), today.getMonth()+1, 0);
+                this.bilanDebut = fmt(premier);
+                this.bilanFin = fmt(dernier);
+            }
+        },
+
+        /* ══ SCROLL ══ */
+        handleScroll(){
+            let st = window.pageYOffset || document.documentElement.scrollTop;
+            this.isCollapsed = st > 40;
+            this.lastScrollTop = st <= 0 ? 0 : st;
+        },
+
+        /* ══════════════════════════════════════════════════════════
+           TARIFICATION AMBULANCE — barème conventionnel MAJORÉ SEFI
+           (réservé aux entreprises dont l'ensemble des véhicules est
+           équipé d'un système de géolocalisation certifié par l'Assurance
+           Maladie et facturant via le télé-service « SEFI »)
+           Avenant n°11 à la convention nationale des transporteurs
+           sanitaires privés — arrêté du 03/05/2023 (JORF du 06/05/2023),
+           valeurs vérifiées au 01/01/2025 (grille tarifaire officielle).
+           Ce barème MAJORÉ est le tarif par défaut. Certaines caisses
+           d'assurance maladie (ex: MGEN) n'acceptent PAS le tarif majoré
+           géoloc — ces patients sont facturés au tarif de base B2 (voir
+           TARIF_B2 ci-dessous). C'est une question de CAISSE du patient,
+           pas de type de transport — un patient MGEN suit TARIF_B2 pour
+           tous ses trajets, dialyse ou non.
+           ⚠️ Corrigé le 26/07/2026 : ce bloc avait été accidentellement
+           dupliqué avec les valeurs de TARIF_B2 (45,60/50,92 au lieu de
+           57,39/64,08) — remis aux bonnes valeurs (confirmées sur
+           plusieurs missions réelles hors DIDIER Robert).
+        ══════════════════════════════════════════════════════════ */
+        TARIF: {
+            forfaitDepartemental: 57.39,
+            forfaitAgglomeration: 64.08,
+            forfaitPriseEnCharge: 57.39,
+            tarifKm: 2.44,
+            // Valorisation trajet court — dégressive selon les km parcourus (barème SEFI certifié)
+            valorisationCourt: [
+                { max: 5,  montant: 9.75 },
+                { max: 10, montant: 7.53 },
+                { max: 15, montant: 5.47 },
+                { max: 19, montant: 3.42 }
+            ],
+            // Majorations Ameli — non cumulables. Chaque poste (forfait, tarif km,
+            // valorisation trajet court) est majoré ET ARRONDI SÉPARÉMENT au centime
+            // avant d'être sommé, comme sur une facture SEFI officielle :
+            majorationNuitPct: 0.75,      // nuit (20h-8h), hors dimanche/férié : +75%
+            majorationFerieJourPct: 0.50, // dimanche/férié entre 8h et 20h : +50%
+            majorationFerieNuitPct: 0.75, // dimanche/férié entre 20h et 8h : +75%
+            partRO: 0.55,
+            partRC: 0.45
+        },
+
+        /* ══════════════════════════════════════════════════════════
+           TARIF B2 (BASE, NON MAJORÉ) — pour les patients dont la
+           caisse d'assurance maladie n'accepte pas le tarif majoré
+           géoloc (confirmé pour la MGEN, ex: DIDIER Robert). Forfait
+           plus bas (45,60 €/50,92 €/45,60 € au lieu de 57,39 €/64,08 €/
+           57,39 €) ; le tarif km (2,44 €) et les % de majoration
+           nuit/férié restent identiques (cf. TARIF).
+           C'est une propriété du PATIENT (sa caisse), pas de la
+           course — géré via le réglage "Tarif B2" dans le formulaire,
+           indépendant du tag "Dialyse" (qui reste purement informatif
+           sur le type de transport).
+        ══════════════════════════════════════════════════════════ */
+        TARIF_B2: {
+            forfaitDepartemental: 45.60,
+            forfaitAgglomeration: 50.92,
+            forfaitPriseEnCharge: 45.60,
+            valorisationCourt: [
+                { max: 5,  montant: 7.57 },
+                { max: 10, montant: 5.95 },
+                { max: 15, montant: 4.32 },
+                { max: 19, montant: 2.71 }
+            ]
+        },
+
+        /* ══════════════════════════════════════════════════════════
+           BASE KILOMÉTRIQUE DE RÉFÉRENCE — trajets fréquents (dialyse,
+           patients récurrents, etc.) pré-enregistrés avec leur distance
+           réelle. Le bon kilométrage s'applique dès la 1ère course, même
+           si le patient change — car c'est le TRAJET (adresses), pas le
+           patient, qui détermine le km.
+           Clé = "adresse de départ||adresse d'arrivée" en minuscules,
+           espaces de début/fin supprimés — DOIT correspondre EXACTEMENT
+           au texte des adresses tel que saisi dans l'app (mêmes accents,
+           même ponctuation). Si l'adresse ne matche pas mot pour mot,
+           cette entrée est ignorée silencieusement.
+           Cette base ne sert que de VALEUR PAR DÉFAUT : dès que tu
+           corriges le km à la main une fois (✏️) sur une course, ta
+           valeur prend le dessus définitivement pour ce trajet.
+        ══════════════════════════════════════════════════════════ */
+        BASE_KM_TRAJETS: {
+            // "3 rue de l'École, La Broque" → "Saturne" (dialyse) = 57 km
+            "3 rue de l'école, la broque||saturne": 57
+            // Ajoute d'autres trajets fréquents ici, un par ligne, au même format :
+            // "adresse de départ||adresse d'arrivée": kilométrage,
+        },
+
+        /* ══════════════════════════════════════════════════════════
+           PATIENTS DIALYSE CONNUS — pré-enregistrés une fois pour toutes
+           (confirmé par plusieurs missions réelles du logiciel officiel :
+           forfait 45,60 €/50,92 €/56,99 € au lieu du barème majoré).
+           Dès que tu coches "Transport dialyse" sur une course, le nom du
+           patient est ajouté ici automatiquement — tu n'as plus jamais à
+           recocher pour ce patient.
+        ══════════════════════════════════════════════════════════ */
+        SEED_DIALYSE_PATIENTS: [
+            'DIDIER Robert'
+            // Ajoute d'autres patients dialyse connus ici, un par ligne :
+            // 'NOM Prénom',
+        ],
+
+        /* ══════════════════════════════════════════════════════════
+           PATIENTS TARIF B2 CONNUS — patients dont la caisse d'assurance
+           maladie n'accepte pas le tarif majoré géoloc (confirmé pour
+           DIDIER Robert, assuré MGEN). Indépendant du tag "Dialyse" :
+           un patient peut être ici sans faire de dialyse, et inversement.
+           Dès que tu coches "Tarif B2" sur une course, le nom du patient
+           est ajouté ici automatiquement — tu n'as plus jamais à
+           recocher pour ce patient.
+        ══════════════════════════════════════════════════════════ */
+        SEED_B2_PATIENTS: [
+            'DIDIER Robert' // MGEN — confirmé par Rajz le 26/07/2026
+            // Ajoute d'autres patients "caisse n'acceptant pas le majoré" ici :
+            // 'NOM Prénom',
+        ],
+
+        // Communes du Bas-Rhin éligibles au forfait agglomération (liste Ameli)
+        COMMUNES_AGGLO_67: [
+            'bischheim','eckbolsheim','hoenheim','illkirch-graffenstaden','lampertheim',
+            'lingolsheim','mittelhausbergen','mundolsheim','niederhausbergen',
+            'oberhausbergen','ostwald','reichstett','schiltigheim','souffelweyersheim',
+            'strasbourg','wolfisheim'
+        ],
+
+        // Détecte si une adresse se situe dans une commune du forfait agglomération (67)
+        isAgglomeration(address){
+            if(!address) return false;
+            const a = address.toLowerCase();
+            return this.COMMUNES_AGGLO_67.some(c => a.includes(c));
+        },
+
+        // Valorisation trajet court dégressive, selon km parcourus (jusqu'au 19e km)
+        // Utilise le barème B2 (forfait 45,60€) si course.tarifB2 est vrai (caisse n'acceptant
+        // pas le majoré, ex: MGEN), sinon le barème majoré standard.
+        getValorisationCourt(km, tarifB2){
+            if(!km || km <= 0) return 0;
+            const tranches = tarifB2 ? this.TARIF_B2.valorisationCourt : this.TARIF.valorisationCourt;
+            for(const tranche of tranches){
+                if(km <= tranche.max) return tranche.montant;
+            }
+            return 0; // au-delà de 19km, pas de valorisation trajet court
+        },
+
+        /* Calcule le tarif complet d'une course à partir de sa distance (km)
+           et de ses options (forfaitType, nuit, ferie, peage, supplements, tarifB2). */
+        computeTarif(course){
+            const km = course.km || 0;
+            const t = this.TARIF; // tarif km + % de majoration : communs aux deux barèmes
+            const bareme = course.tarifB2 ? this.TARIF_B2 : this.TARIF; // forfaits + valorisation : dépendent de la caisse du patient
+
+            // 1. Forfait de base (barème dialyse si transport de dialyse, sinon barème standard majoré)
+            let forfaitType = course.forfaitType || 'dep'; // 'dep' | 'aggl' | 'pec'
+            let forfait = forfaitType==='aggl' ? bareme.forfaitAgglomeration
+                        : forfaitType==='pec'  ? bareme.forfaitPriseEnCharge
+                        : bareme.forfaitDepartemental;
+
+            // 2. Km facturables : 3 premiers km inclus dans dep/aggl, dès le 1er km en PEC
+            const kmInclus = forfaitType==='pec' ? 0 : 3;
+            const kmFacturables = Math.max(0, km - kmInclus);
+            const montantKm = Math.round(kmFacturables * t.tarifKm * 100)/100;
+
+            // 3. Valorisation trajet court (sur les km facturables, dégressif)
+            const valorisationCourt = this.getValorisationCourt(km, course.tarifB2);
+
+            // 4. Majoration nuit (20h-8h) / dimanche-férié — non cumulables (règle Ameli) :
+            //    - Nuit (hors dimanche/férié) : +75% du tarif de jour
+            //    - Dimanche/férié entre 8h et 20h : +50%
+            //    - Dimanche/férié entre 20h et 8h : +75%
+            //    Chaque poste (forfait, tarif km, valorisation trajet court) est majoré
+            //    ET ARRONDI SÉPARÉMENT au centime avant d'être sommé — c'est ainsi que
+            //    procède la facturation SEFI officielle (vérifié contre la grille réelle) ;
+            //    arrondir une seule fois sur le total peut décaler le résultat d'un centime.
+            let tauxMajoration = 0;
+            if(course.majFerie && course.majNuit) tauxMajoration = t.majorationFerieNuitPct;
+            else if(course.majFerie)              tauxMajoration = t.majorationFerieJourPct;
+            else if(course.majNuit)               tauxMajoration = t.majorationNuitPct;
+            const majoForfait      = Math.round(forfait * tauxMajoration * 100)/100;
+            const majoKm           = Math.round(montantKm * tauxMajoration * 100)/100;
+            const majoValorisation = Math.round(valorisationCourt * tauxMajoration * 100)/100;
+            const majoration = Math.round((majoForfait + majoKm + majoValorisation) * 100)/100;
+            // Conservés séparément pour l'affichage (mais un seul est non-nul à la fois)
+            const majorationNuit  = (course.majNuit && !course.majFerie) ? majoration : 0;
+            const majorationFerie = course.majFerie ? majoration : 0;
+
+            // 5. Péage + suppléments (saisis manuellement)
+            const peage = parseFloat(course.peage) || 0;
+            const supplements = parseFloat(course.supplements) || 0;
+
+            // 6. Total
+            const total = Math.round((forfait + montantKm + valorisationCourt + majoration + peage + supplements) * 100)/100;
+
+            const partRO = Math.round(total * t.partRO * 100)/100;
+            const partRC = Math.round((total - partRO) * 100)/100;
+
+            return { forfait, forfaitType, km, kmFacturables, montantKm, valorisationCourt, majorationNuit, majorationFerie, peage, supplements, total, partRO, partRC };
+        },
+
+        // Détecte si une heure (format "HH:MM") tombe dans la plage de nuit 20h00 → 8h00
+        isNightTime(heureStr){
+            if(!heureStr) return false;
+            const [h] = heureStr.split(':').map(Number);
+            return h >= 20 || h < 8;
+        },
+
+        // Détecte la nuit en tenant compte du départ réel ET de l'arrivée estimée
+        isNightTimeCourse(course){
+            // 1. Heure de départ réel (si pointée) ou heure de départ planifiée
+            const hDepart = course.departReel || course.heureDepart;
+            if(this.isNightTime(hDepart)) return true;
+            // 2. Heure d'arrivée estimée (si calculée) — ex: départ 19h51 + 41min → 20h32
+            if(course.arriveeEstimee && this.isNightTime(course.arriveeEstimee)) return true;
+            // 3. Heure de libération (dépôt + nettoyage)
+            if(course.heureLiberation && this.isNightTime(course.heureLiberation)) return true;
+            return false;
+        },
+
+        // Calcule la date du dimanche de Pâques pour une année donnée (algorithme de Gauss),
+        // nécessaire pour dériver les jours fériés mobiles (Lundi de Pâques, Ascension, Pentecôte).
+        computeEasterDate(year){
+            const a = year % 19, b = Math.floor(year/100), c = year % 100;
+            const d = Math.floor(b/4), e = b % 4, f = Math.floor((b+8)/25), g = Math.floor((b-f+1)/3);
+            const h = (19*a + b - d - g + 15) % 30;
+            const i = Math.floor(c/4), k = c % 4;
+            const l = (32 + 2*e + 2*i - h - k) % 7;
+            const m = Math.floor((a + 11*h + 22*l) / 451);
+            const month = Math.floor((h + l - 7*m + 114) / 31);
+            const day = ((h + l - 7*m + 114) % 31) + 1;
+            return new Date(year, month - 1, day);
+        },
+        // Vrai si la date (format "YYYY-MM-DD") est un jour férié français (fixe ou mobile)
+        isFerieDate(dateStr){
+            if(!dateStr) return false;
+            const year = Number(dateStr.slice(0, 4));
+            const fixed = [`${year}-01-01`, `${year}-05-01`, `${year}-05-08`, `${year}-07-14`, `${year}-08-15`, `${year}-11-01`, `${year}-11-11`, `${year}-12-25`];
+            if(fixed.includes(dateStr)) return true;
+            const easter = this.computeEasterDate(year);
+            const toStr = dt => `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+            const easterMonday = new Date(easter); easterMonday.setDate(easter.getDate() + 1);
+            const ascension = new Date(easter); ascension.setDate(easter.getDate() + 39);
+            const whitMonday = new Date(easter); whitMonday.setDate(easter.getDate() + 50);
+            return [toStr(easterMonday), toStr(ascension), toStr(whitMonday)].includes(dateStr);
+        },
+        // Vrai si la course tombe un dimanche, un jour férié, OU un samedi à partir de 12h
+        // (le samedi après-midi est conventionnellement traité comme un jour férié dans le
+        // transport sanitaire — même majoration que dimanche/férié).
+        isFerieCourse(course){
+            if(!course.date) return false;
+            const d = new Date(course.date + 'T00:00:00');
+            const dow = d.getDay(); // 0 = dimanche ... 6 = samedi
+            if(dow === 0) return true;
+            if(this.isFerieDate(course.date)) return true;
+            if(dow === 6){
+                const heure = course.departReel || course.heureDepart || course.heureRdv || '';
+                const h = Number(heure.split(':')[0]);
+                if(!isNaN(h) && h >= 12) return true;
+            }
+            return false;
+        },
+
+        // Recalcule et stocke le tarif sur la course (appelé après calculateRoute ou changement d'option)
+        refreshTarif(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            // Détection automatique agglo selon les deux adresses (dép/arr en zone agglo)
+            if(this.courses[idx].forfaitType !== 'pec' && !this.courses[idx].forfaitTypeManuel){
+                const aggloAuto = this.isAgglomeration(this.courses[idx].depart) && this.isAgglomeration(this.courses[idx].arrivee);
+                this.courses[idx].forfaitType = aggloAuto ? 'aggl' : 'dep';
+            }
+            // Détection automatique majoration nuit (20h-8h), sauf override manuel
+            if(!this.courses[idx].majNuitManuel){
+                this.courses[idx].majNuit = this.isNightTimeCourse(this.courses[idx]);
+            }
+            // Détection automatique majoration férié (dimanche, jour férié, samedi ≥12h), sauf override manuel
+            if(!this.courses[idx].majFerieManuel){
+                this.courses[idx].majFerie = this.isFerieCourse(this.courses[idx]);
+            }
+            // Calcul automatique du tarif
+            this.courses[idx].tarif = this.computeTarif(this.courses[idx]);
+            // Tarif mémorisé : priorité manuel direct > mémorisé > auto
+            if(this.courses[idx].tarifManuel && !this.courses[idx].tarifMemoire){
+                // Tarif saisi manuellement directement → on le réapplique
+                const total = this.courses[idx].tarifManuelValeur;
+                if(total){
+                    this.courses[idx].tarif.total = total;
+                    this.courses[idx].tarif.partRO = Math.round(total * this.TARIF.partRO * 100) / 100;
+                    this.courses[idx].tarif.partRC = Math.round((total - this.courses[idx].tarif.partRO) * 100) / 100;
+                }
+            } else {
+                // Vérifier si un tarif mémorisé existe pour ce trajet (mémorisé ou nouvelle course)
+                const trajKey = (this.courses[idx].depart + '||' + this.courses[idx].arrivee).toLowerCase().trim();
+                const tarifMemorise = this.savedTarifTrajets[trajKey];
+                if(tarifMemorise !== undefined){
+                    this.courses[idx].tarif.total = tarifMemorise;
+                    this.courses[idx].tarif.partRO = Math.round(tarifMemorise * this.TARIF.partRO * 100) / 100;
+                    this.courses[idx].tarif.partRC = Math.round((tarifMemorise - this.courses[idx].tarif.partRO) * 100) / 100;
+                    this.courses[idx].tarifManuel = true;
+                    this.courses[idx].tarifMemoire = true;
+                    this.courses[idx].tarifManuelValeur = tarifMemorise;
+                }
+            }
+            this.save();
+        },
+
+        toggleEditTarif(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].editingTarif = !this.courses[idx].editingTarif;
+        },
+
+        setTarifManuel(course, value){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            const tarif = parseFloat(value);
+            if(isNaN(tarif) || tarif < 0) return;
+            const total = Math.round(tarif * 100) / 100;
+            // On garde la structure tarif mais on écrase le total
+            if(!this.courses[idx].tarif) this.courses[idx].tarif = {};
+            this.courses[idx].tarif.total = total;
+            this.courses[idx].tarif.partRO = Math.round(total * this.TARIF.partRO * 100) / 100;
+            this.courses[idx].tarif.partRC = Math.round((total - this.courses[idx].tarif.partRO) * 100) / 100;
+            this.courses[idx].tarifManuel = true;
+            this.courses[idx].tarifMemoire = false;
+            this.courses[idx].tarifManuelValeur = total;
+            this.courses[idx].editingTarif = false;
+            // Mémoriser pour ce trajet
+            const trajKey = (this.courses[idx].depart + '||' + this.courses[idx].arrivee).toLowerCase().trim();
+            this.savedTarifTrajets[trajKey] = total;
+            localStorage.setItem('ambulances_tarif_trajets', JSON.stringify(this.savedTarifTrajets));
+            this.save();
+        },
+
+        async resetTarifAuto(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].tarifManuel = false;
+            this.courses[idx].tarifMemoire = false;
+            this.courses[idx].tarifManuelValeur = null;
+            this.courses[idx].editingTarif = false;
+            // Effacer aussi le tarif mémorisé pour ce trajet
+            const trajKey = (this.courses[idx].depart + '||' + this.courses[idx].arrivee).toLowerCase().trim();
+            delete this.savedTarifTrajets[trajKey];
+            localStorage.setItem('ambulances_tarif_trajets', JSON.stringify(this.savedTarifTrajets));
+            this.refreshTarif(this.courses[idx]);
+            this.save();
+        },
+
+        setForfaitType(course, type){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].forfaitType = type;
+            this.courses[idx].forfaitTypeManuel = true; // empêche l'auto-détection de l'écraser
+            this.refreshTarif(this.courses[idx]);
+        },
+
+        toggleTarifOption(course, key){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx][key] = !this.courses[idx][key];
+            if(key==='majNuit') this.courses[idx].majNuitManuel = true; // empêche l'auto-détection 20h-8h de l'écraser
+            this.refreshTarif(this.courses[idx]);
+        },
+
+        /* ══ AFFICHAGE COMPACT / DÉPLIÉ DES COURSES ══ */
+        /* ══ POINTAGE HORAIRE RÉEL (prise en charge / dépôt) ══ */
+        markTime(course, type){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            // Garde-fou : si l'heure est déjà pointée, un reclique accidentel ne doit
+            // pas l'écraser silencieusement. Il faut d'abord effacer via le ✕.
+            const champ = type==='pec' ? 'pecReelle' : type==='depart' ? 'departReel' : 'depotReelle';
+            if(this.courses[idx][champ]) return;
+            const now = new Date();
+            const hhmm = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            this.courses[idx][champ] = hhmm;
+            this.save();
+            if(type==='depart'){
+                this.calculateRoute(this.courses[idx]).then(() => this.recalculerChaineAPartir(this.courses[idx].id));
+            }
+        },
+        clearTime(course, type){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            if(type==='pec') this.courses[idx].pecReelle = null;
+            else if(type==='depart') this.courses[idx].departReel = null;
+            else this.courses[idx].depotReelle = null;
+            this.save();
+            if(type==='depart'){
+                this.calculateRoute(this.courses[idx]).then(() => this.recalculerChaineAPartir(this.courses[idx].id));
+            }
+        },
+        // Bascule le mode édition manuelle (✏️) pour une heure pointée (PEC / départ / dépôt),
+        // pour pouvoir taper une heure précise au lieu de se limiter à "maintenant".
+        toggleEditPec(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].editingPec = !this.courses[idx].editingPec;
+        },
+        toggleEditDepart(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].editingDepart = !this.courses[idx].editingDepart;
+        },
+        toggleEditDepot(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].editingDepot = !this.courses[idx].editingDepot;
+        },
+        // Saisie manuelle d'une heure (format "HH:MM") pour PEC / départ / dépôt
+        setTimeManuel(course, type, value){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            const champ = type==='pec' ? 'pecReelle' : type==='depart' ? 'departReel' : 'depotReelle';
+            this.courses[idx][champ] = value || null;
+            if(type==='pec') this.courses[idx].editingPec = false;
+            else if(type==='depart') this.courses[idx].editingDepart = false;
+            else this.courses[idx].editingDepot = false;
+            this.save();
+            if(type==='depart'){
+                this.calculateRoute(this.courses[idx]).then(() => this.recalculerChaineAPartir(this.courses[idx].id));
+            } else {
+                this.refreshTarif(this.courses[idx]);
+            }
+        },
+
+        toggleExpand(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].expanded = !this.courses[idx].expanded;
+        },
+
+        updateTarifField(course, key, value){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx][key] = value;
+            this.refreshTarif(this.courses[idx]);
+        },
+
+        /* ══ KM MANUEL — override du kilométrage calculé automatiquement ══ */
+        toggleEditKm(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].editingKm = !this.courses[idx].editingKm;
+        },
+        setKmManuel(course, value){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            const km = parseFloat(value);
+            this.courses[idx].km = isNaN(km) ? 0 : Math.round(km);
+            this.courses[idx].kmManuel = true;
+            this.courses[idx].kmMemoire = false;  // saisie manuelle directe → pas un mémo
+            this.courses[idx].editingKm = false;
+            // ── Mémoriser ce km pour ce trajet (départ → arrivée) ──
+            const trajKey = (this.courses[idx].depart + '||' + this.courses[idx].arrivee).toLowerCase().trim();
+            this.savedKmTrajets[trajKey] = this.courses[idx].km;
+            localStorage.setItem('ambulances_km_trajets', JSON.stringify(this.savedKmTrajets));
+            this.refreshTarif(this.courses[idx]);
+        },
+        async resetKmAuto(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            this.courses[idx].kmManuel = false;
+            this.courses[idx].kmMemoire = false;
+            this.courses[idx].editingKm = false;
+            // Effacer aussi le km mémorisé pour ce trajet
+            const trajKey = (this.courses[idx].depart + '||' + this.courses[idx].arrivee).toLowerCase().trim();
+            delete this.savedKmTrajets[trajKey];
+            localStorage.setItem('ambulances_km_trajets', JSON.stringify(this.savedKmTrajets));
+            await this.calculateRoute(this.courses[idx]);
+        },
+
+        /* ══ GÉOCODAGE — API Adresse gouv.fr, biais géo Bas-Rhin/Alsace, + cache persistant + fallback offline ══ */
+        // Centre de biais géographique (Molsheim, 67) — fait remonter les résultats locaux en priorité
+        geoBiasLat: 48.5407,
+        geoBiasLon: 7.4953,
+
+        async geocodeDirect(address){
+            const key = address.toLowerCase().trim();
+            // 1. Cache mémoire
+            if(this.coordsCache[key]) return this.coordsCache[key];
+            // 2. Cache localStorage
+            if(this.persistentGeoCache[key]) return this.persistentGeoCache[key];
+            // 3. Si hors-ligne → null (le calcul à vol d'oiseau sera utilisé)
+            if(!navigator.onLine) return null;
+            try{
+                const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(address)}&limit=1&lat=${this.geoBiasLat}&lon=${this.geoBiasLon}`;
+                const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+                const data = await res.json();
+                if(data?.features?.length > 0){
+                    const f = data.features[0];
+                    const coords = { lat: f.geometry.coordinates[1], lon: f.geometry.coordinates[0] };
+                    // Sauvegarde dans les deux caches
+                    this.coordsCache[key] = coords;
+                    this.persistentGeoCache[key] = coords;
+                    saveGeoCache(this.persistentGeoCache);
+                    return coords;
+                }
+            } catch(e){}
+            return null;
+        },
+
+        async searchAddress(query, type){
+            const cible = type==='calcDepart' ? 'calcSuggestionsDepart' : type==='calcArrivee' ? 'calcSuggestionsArrivee' : type==='depart' ? 'suggestionsDepart' : 'suggestionsArrivee';
+            if(!query || query.trim().length < 3){
+                this[cible] = [];
+                return;
+            }
+            // Si hors-ligne : proposer les adresses déjà connues en cache
+            if(!navigator.onLine){
+                const q = query.toLowerCase();
+                const cached = Object.keys(this.persistentGeoCache)
+                    .filter(k => k.includes(q))
+                    .slice(0,4)
+                    .map(k => ({ label: k, ...this.persistentGeoCache[k] }));
+                this[cible] = cached;
+                return;
+            }
+            try{
+                const urlPhoton = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=6&lat=${this.geoBiasLat}&lon=${this.geoBiasLon}&zoom=10&location_bias_scale=0.1&lang=fr`;
+                const urlGouv = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5&lat=${this.geoBiasLat}&lon=${this.geoBiasLon}`;
+
+                const [resPhoton, resGouv] = await Promise.allSettled([
+                    fetch(urlPhoton, { signal: AbortSignal.timeout(8000) }),
+                    fetch(urlGouv, { signal: AbortSignal.timeout(8000) })
+                ]);
+
+                let listPhoton = [];
+                if(resPhoton.status==='fulfilled' && resPhoton.value.ok){
+                    const data = await resPhoton.value.json();
+                    listPhoton = (data.features||[]).map(f => {
+                        const p = f.properties || {};
+                        const ville = p.city || p.town || p.village || '';
+                        const parts = [p.name, p.street, p.postcode, ville].filter(Boolean);
+                        const label = p.name && p.name !== p.street
+                            ? [p.name, [p.housenumber, p.street].filter(Boolean).join(' '), ville].filter(Boolean).join(', ')
+                            : parts.join(', ');
+                        return {
+                            label,
+                            lat: f.geometry?.coordinates?.[1],
+                            lon: f.geometry?.coordinates?.[0]
+                        };
+                    }).filter(s => s.label && s.lat!==undefined && s.lon!==undefined);
+                } else if(resPhoton.status==='rejected'){
+                    console.warn('Photon indisponible :', resPhoton.reason);
+                }
+
+                let listGouv = [];
+                if(resGouv.status==='fulfilled' && resGouv.value.ok){
+                    const data = await resGouv.value.json();
+                    listGouv = (data.features||[]).map(f => ({
+                        label: f.properties.label,
+                        lat: f.geometry.coordinates[1],
+                        lon: f.geometry.coordinates[0]
+                    }));
+                }
+
+                // Fusion + dédoublonnage
+                const merged = [...listPhoton, ...listGouv];
+                const seen = new Set();
+                const dedup = merged.filter(s => {
+                    const k = s.label.toLowerCase().trim();
+                    if(seen.has(k)) return false;
+                    seen.add(k);
+                    return true;
+                });
+
+                // Tri par distance réelle au point de biais
+                const distSq = (lat, lon) => {
+                    const dLat = lat - this.geoBiasLat;
+                    const dLon = (lon - this.geoBiasLon) * Math.cos(this.geoBiasLat * Math.PI/180);
+                    return dLat*dLat + dLon*dLon;
+                };
+                dedup.sort((a,b) => distSq(a.lat,a.lon) - distSq(b.lat,b.lon));
+
+                // ── Adresses favorites (déjà utilisées) : remontées en tête ──
+                const q = query.toLowerCase().trim();
+                const favorites = this.savedAddresses
+                    .filter(a => a.label.toLowerCase().includes(q))
+                    .slice(0, 3)
+                    .map(a => ({ ...a, isFavorite: true }));
+
+                // On fusionne favorites en tête, sans doublon avec les résultats API
+                const seenFav = new Set(favorites.map(a => a.label.toLowerCase().trim()));
+                const apiResults = dedup
+                    .filter(s => !seenFav.has(s.label.toLowerCase().trim()))
+                    .slice(0, 8 - favorites.length);
+
+                const list = [...favorites, ...apiResults];
+
+                this[cible] = list;
+            } catch(e){}
+        },
+
+        selectAddress(s, type){
+            const key = s.label.toLowerCase();
+            this.coordsCache[key] = { lat: s.lat, lon: s.lon };
+            this.persistentGeoCache[key] = { lat: s.lat, lon: s.lon };
+            saveGeoCache(this.persistentGeoCache);
+            if(type==='calcDepart'){
+                this.calcDepart = s.label; this.calcCoordsDepart = { lat:s.lat, lon:s.lon }; this.calcSuggestionsDepart=[];
+                this.calcCalculerDistance();
+                return;
+            }
+            if(type==='calcArrivee'){
+                this.calcArrivee = s.label; this.calcCoordsArrivee = { lat:s.lat, lon:s.lon }; this.calcSuggestionsArrivee=[];
+                this.calcCalculerDistance();
+                return;
+            }
+            // Mémoriser l'adresse dans l'historique personnel (sans doublons)
+            const exists = this.savedAddresses.findIndex(a => a.label.toLowerCase() === key);
+            if(exists !== -1){
+                // Remettre en tête pour favoriser les plus récentes
+                const entry = this.savedAddresses.splice(exists, 1)[0];
+                this.savedAddresses.unshift(entry);
+            } else {
+                this.savedAddresses.unshift({ label: s.label, lat: s.lat, lon: s.lon });
+                if(this.savedAddresses.length > 50) this.savedAddresses.pop(); // limite à 50
+            }
+            localStorage.setItem('ambulances_adresses_history', JSON.stringify(this.savedAddresses));
+            if(type==='depart'){ this.form.depart=s.label; this.suggestionsDepart=[]; }
+            else { this.form.arrivee=s.label; this.suggestionsArrivee=[]; }
+        },
+
+        // Calcule la distance route réelle (OSRM, avec repli à vol d'oiseau si hors-ligne)
+        // entre les deux adresses choisies dans le calculateur rapide, et met à jour calcKm.
+        async calcCalculerDistance(){
+            if(!this.calcCoordsDepart || !this.calcCoordsArrivee) return;
+            this.calcLoadingRoute = true;
+            try{
+                const from = this.calcCoordsDepart, to = this.calcCoordsArrivee;
+                let km;
+                if(navigator.onLine){
+                    try{
+                        const url = `https://router.project-osrm.org/route/v1/driving/${from.lon},${from.lat};${to.lon},${to.lat}?overview=false`;
+                        const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
+                        const data = await res.json();
+                        if(data.code==='Ok' && data.routes?.length>0) km = Math.round(data.routes[0].distance/1000);
+                    } catch(e){}
+                }
+                if(km===undefined) km = this.calcRouteOffline(from, to).km;
+                this.calcKm = km;
+                this.calcRapide();
+            } finally {
+                this.calcLoadingRoute = false;
+            }
+        },
+
+        /* ══ CALCUL DE TRAJET ══ */
+
+        // Calcul à vol d'oiseau (toujours disponible, même offline)
+        calcRouteOffline(from, to){
+            const R=6371;
+            const dLat=((to.lat-from.lat)*Math.PI)/180;
+            const dLon=((to.lon-from.lon)*Math.PI)/180;
+            const a=Math.sin(dLat/2)**2 + Math.cos(from.lat*Math.PI/180)*Math.cos(to.lat*Math.PI/180)*Math.sin(dLon/2)**2;
+            const distOiseau = R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+            const km = distOiseau * 1.3;
+            const speed = km<5?26 : km<15?44 : km<40?68 : 88;
+            const mins = Math.round((km/speed)*60+5);
+            return { km: Math.round(km), mins, isOffline: true };
+        },
+
+        // Calcul via OSRM (réseau) avec fallback offline
+        async getRouteTime(fromCoords, toCoords){
+            if(!navigator.onLine) return this.calcRouteOffline(fromCoords, toCoords).mins;
+            try{
+                const url=`https://router.project-osrm.org/route/v1/driving/${fromCoords.lon},${fromCoords.lat};${toCoords.lon},${toCoords.lat}?overview=false`;
+                const res=await fetch(url, { signal: AbortSignal.timeout(6000) });
+                const data=await res.json();
+                if(data.code==='Ok' && data.routes?.length>0) return Math.round(data.routes[0].duration/60);
+            } catch(e){}
+            // Fallback offline si OSRM ne répond pas
+            return this.calcRouteOffline(fromCoords, toCoords).mins;
+        },
+
+        async calculateRoute(course){
+            const key = c => c.toLowerCase().trim();
+            let from = this.coordsCache[key(course.depart)] || course.coordsDepart || await this.geocodeDirect(course.depart);
+            let to   = this.coordsCache[key(course.arrivee)] || course.coordsArrivee || await this.geocodeDirect(course.arrivee);
+            if(!from || !to) return;
+
+            // ── Km mémorisé pour ce trajet ? On le réapplique automatiquement ──
+            const trajKey = (course.depart + '||' + course.arrivee).toLowerCase().trim();
+            const kmMemorise = this.savedKmTrajets[trajKey];
+
+            // Distance & temps de trajet : OSRM (route réelle) online, sinon estimation à vol d'oiseau
+            const distData = this.calcRouteOffline(from, to); // fallback / estimation offline
+            let km = distData.km;
+            let mins, isOfflineCalc;
+            if(navigator.onLine){
+                try{
+                    const url=`https://router.project-osrm.org/route/v1/driving/${from.lon},${from.lat};${to.lon},${to.lat}?overview=false`;
+                    const res=await fetch(url, { signal: AbortSignal.timeout(6000) });
+                    const data=await res.json();
+                    if(data.code==='Ok' && data.routes?.length>0){
+                        mins=Math.round(data.routes[0].duration/60);
+                        km=Math.round(data.routes[0].distance/1000);
+                        isOfflineCalc=false;
+                    } else throw new Error();
+                } catch(e){
+                    mins=distData.mins;
+                    isOfflineCalc=true;
+                }
+            } else {
+                mins=distData.mins;
+                isOfflineCalc=true;
+            }
+
+            let priseMins;
+            if(course.departReel){
+                // L'utilisateur a pointé l'heure réelle de démarrage (trajet roulé) :
+                // on calcule tout à partir de ce moment-là, sans ajouter la marge théorique.
+                const [hR,mR] = course.departReel.split(':').map(Number);
+                priseMins = hR*60+mR;
+            } else {
+                const [hD,mD] = course.heureDepart.split(':').map(Number);
+                priseMins = hD*60+mD+(course.margeMin||10);
+            }
+            const heureDepartReel = this.minsToTime(priseMins);
+            let arrMins = priseMins + mins;
+            const arriveeEstimee = this.minsToTime(arrMins);
+            let libMins = arrMins + (course.marginMax||10);
+            const heureLiberation = this.minsToTime(libMins);
+
+            let status = 'juste';
+            let retardMin = 0;
+            if(course.typeTrajet !== 'retour' && !course.pasDeCreneauRetour){
+                const [hR,mR] = course.heureRdv.split(':').map(Number);
+                const rdvMins = hR*60+mR;
+                if(arrMins > rdvMins){ status='retard'; retardMin = arrMins - rdvMins; }
+                else if(rdvMins-arrMins <= 15) status='juste';
+                else status='avance';
+            }
+
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx !== -1){
+                // Priorité km : manuel (saisi maintenant) > mémorisé (trajet connu) > OSRM calculé
+                let kmFinal;
+                if(this.courses[idx].kmManuel && !this.courses[idx].kmMemoire){
+                    // Km saisi manuellement par l'utilisateur → on le garde tel quel
+                    kmFinal = this.courses[idx].km;
+                } else if(kmMemorise !== undefined){
+                    // Trajet déjà connu → on réapplique le km mémorisé
+                    kmFinal = kmMemorise;
+                    this.courses[idx].kmManuel = true;
+                    this.courses[idx].kmMemoire = true;
+                } else {
+                    // Calcul automatique OSRM
+                    kmFinal = km;
+                    this.courses[idx].kmManuel = false;
+                    this.courses[idx].kmMemoire = false;
+                }
+                Object.assign(this.courses[idx], { travelMin:mins, km:kmFinal, arriveeEstimee, heureDepartReel, heureLiberation, status, retardMin, coordsDepart:from, coordsArrivee:to, isOfflineCalc });
+                this.refreshTarif(this.courses[idx]);
+                this.save();
+            }
+            await this.calculateLiaisonForNeighbors(course.id);
+            await this.updateTimeToNextCourse();
+        },
+
+        minsToTime(mins){
+            const m = ((mins % 1440) + 1440) % 1440; // ramène dans 0–1439 même si négatif ou >24h
+            return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+        },
+
+        // Formate une date en YYYY-MM-DD selon le fuseau LOCAL du téléphone.
+        // Ne jamais utiliser toISOString() pour ça : il convertit en UTC et peut
+        // faire basculer sur le jour précédent/suivant entre minuit et 1h-2h
+        // du matin selon le décalage horaire (heure d'été/hiver en France).
+        todayLocal(d = new Date()){
+            const y = d.getFullYear();
+            const m = String(d.getMonth()+1).padStart(2,'0');
+            const day = String(d.getDate()).padStart(2,'0');
+            return `${y}-${m}-${day}`;
+        },
+
+        async calculateLiaisonForNeighbors(courseId){
+            const list = this.filteredCourses;
+            const index = list.findIndex(c => c.id===courseId);
+            if(index <= 0) return;
+            const prev = list[index-1];
+            const curr = list[index];
+            if(!prev.coordsArrivee || !curr.coordsDepart || !prev.heureLiberation || !curr.heureDepart) return;
+            const tempsLiaison = await this.getRouteTime(prev.coordsArrivee, curr.coordsDepart);
+            if(tempsLiaison === null) return;
+            const [hL,mL] = prev.heureLiberation.split(':').map(Number);
+            const [hD,mD] = curr.heureDepart.split(':').map(Number);
+            const tempsLibre = (hD*60+mD)-(hL*60+mL);
+            // Heure conseillée de quitter le point de dépose précédent pour arriver
+            // à l'heure de prise en charge prévue de cette course-ci, avec 5 min de marge.
+            const cibleMins = hD*60+mD;
+            const departConseilleMins = ((cibleMins - tempsLiaison - 5)%1440+1440)%1440;
+            const idxStore = this.courses.findIndex(c => c.id===curr.id);
+            if(idxStore !== -1){
+                this.courses[idxStore].tempsLiaison = tempsLiaison;
+                this.courses[idxStore].tempsLibreAvant = tempsLibre;
+                // Une course sans créneau imposé (retour maison ou sortie d'hospitalisation)
+                // n'a pas d'heure de prise en charge contrainte : jamais d'alerte
+                // "liaison impossible" dans ce cas, juste l'info de trajet.
+                this.courses[idxStore].liaisonPossible = curr.pasDeCreneauRetour ? true : (tempsLiaison <= tempsLibre);
+                this.courses[idxStore].heureDepartConseillee = curr.pasDeCreneauRetour ? null : this.minsToTime(departConseilleMins);
+                this.save();
+            }
+        },
+
+        checkConflict(course, index){ return index===0 ? false : course.liaisonPossible===false; },
+
+        /* ══ RECALCUL EN CASCADE — propage jusqu'à la fin de la journée, pas
+           seulement au voisin immédiat. Indispensable car une insertion ou
+           modification au milieu du planning doit répercuter ses effets sur
+           toutes les courses suivantes (dépose -> liaison -> dépose -> ...). ══ */
+        async recalculerChaineAPartir(courseId){
+            const list = this.filteredCourses;
+            let idx = list.findIndex(c => c.id===courseId);
+            if(idx===-1) return;
+            // On recalcule la liaison de la course elle-même par rapport à sa
+            // précédente (sauf si c'est la première de la journée), puis on
+            // avance de voisin en voisin jusqu'au bout.
+            for(let i = idx; i < list.length; i++){
+                if(i > 0) await this.calculateLiaisonForNeighbors(list[i].id);
+            }
+        },
+
+        /* ══ GESTION DES COURSES ══ */
+        // ── Scan photo (OCR) : charge Tesseract.js à la demande seulement
+        // (pas au chargement de la page, pour ne pas alourdir le démarrage) ──
+        async loadTesseract(){
+            if(window.Tesseract) return true;
+            return new Promise((resolve) => {
+                const s = document.createElement('script');
+                s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+                s.onload = () => resolve(true);
+                s.onerror = () => resolve(false);
+                document.head.appendChild(s);
+            });
+        },
+        // Prétraitement gratuit de l'image (niveaux de gris + contraste renforcé + agrandissement
+        // des petites photos) : améliore nettement la lecture par l'OCR sur des photos de téléphone
+        // (flou léger, éclairage inégal, angle), sans dépendre d'un service payant.
+        async preprocessImage(file){
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const url = URL.createObjectURL(file);
+                img.onload = () => {
+                    try {
+                        const scale = img.width < 1200 ? 2 : 1;
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width * scale;
+                        canvas.height = img.height * scale;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const d = imageData.data;
+                        const contrast = 1.35;
+                        for(let i = 0; i < d.length; i += 4){
+                            const gray = 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2];
+                            const adjusted = Math.min(255, Math.max(0, (gray - 128) * contrast + 128));
+                            d[i] = d[i+1] = d[i+2] = adjusted;
+                        }
+                        ctx.putImageData(imageData, 0, 0);
+                        URL.revokeObjectURL(url);
+                        resolve(canvas.toDataURL('image/png'));
+                    } catch(e){
+                        URL.revokeObjectURL(url);
+                        reject(e);
+                    }
+                };
+                img.onerror = reject;
+                img.src = url;
+            });
+        },
+        async handleScanFile(event){
+            const file = event.target.files[0];
+            event.target.value = ''; // permet de rescanner la même photo si besoin
+            if(!file) return;
+            this.scanning = true;
+            this.scanProgress = 0;
+            this.ocrRawText = '';
+            this.ocrCandidates = { times: [], addresses: [], km: null, tag: null };
+            const ok = await this.loadTesseract();
+            if(!ok){
+                this.scanning = false;
+                alert("Impossible de charger le module de lecture (OCR). Vérifie ta connexion et réessaie — une fois chargé une première fois, il reste en cache pour les prochaines fois.");
+                return;
+            }
+            let ocrInput = file;
+            try { ocrInput = await this.preprocessImage(file); }
+            catch(e) { /* si le pré-traitement échoue, on lit la photo d'origine sans bloquer */ }
+            try {
+                let text = '';
+                const logger = m => { if(m.status === 'recognizing text') this.scanProgress = Math.round((m.progress||0) * 100); };
+                try {
+                    // Mode "bloc de texte" (PSM 6) : plus adapté aux fiches mission denses
+                    // (plusieurs lignes, adresses sur plusieurs lignes) que le mode par défaut.
+                    const worker = await Tesseract.createWorker('fra', 1, { logger });
+                    await worker.setParameters({ tessedit_pageseg_mode: '6' });
+                    const { data } = await worker.recognize(ocrInput);
+                    text = data.text;
+                    await worker.terminate();
+                } catch(e){
+                    // Si l'API détaillée n'est pas disponible (version différente de Tesseract.js),
+                    // on retombe sur l'appel simple.
+                    const { data } = await Tesseract.recognize(ocrInput, 'fra', { logger });
+                    text = data.text;
+                }
+                this.ocrRawText = text || '';
+                // Une photo peut contenir plusieurs fiches mission (ex. app "Liste des missions"
+                // avec plusieurs cartes "Aujourd'hui"/"Demain" à la suite). On essaie d'abord de
+                // les découper individuellement ; si aucun repère de ce type n'est trouvé (ex.
+                // capture du planning Caelis), on retombe sur le pré-remplissage simple existant.
+                const missions = this.parseOcrMissions(this.ocrRawText);
+                if(missions.length > 0){
+                    this.ocrMissions = [...this.ocrMissions, ...missions];
+                } else {
+                    this.parseOcrText(this.ocrRawText);
+                }
+            } catch(e){
+                alert("Erreur pendant la lecture de la photo : " + e.message);
+            } finally {
+                this.scanning = false;
+            }
+        },
+        // Extraction heuristique : pré-remplit le formulaire avec les meilleures
+        // suppositions, mais NE VALIDE RIEN automatiquement — la course reste à
+        // vérifier et enregistrer à la main comme d'habitude, l'OCR n'étant jamais fiable à 100%.
+        parseOcrText(text){
+            const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+
+            // Heures au format HH:MM, HH.MM ou HHhMM
+            const timeRegex = /\b([01]?\d|2[0-3])[:h.]([0-5]\d)\b/g;
+            const times = [...text.matchAll(timeRegex)].map(m => `${m[1].padStart(2,'0')}:${m[2]}`);
+            const uniqueTimes = [...new Set(times)];
+
+            // Adresses : lignes contenant un code postal français à 5 chiffres
+            const addressLines = [...new Set(lines.filter(l => /\b\d{5}\b/.test(l)))];
+
+            // Distance en km
+            const kmMatch = text.match(/(\d{1,3})\s*km/i);
+
+            // Nom patient : motif "NOM Prénom" (ex. "DIDIER Robert")
+            const nameMatch = text.match(/\b([A-ZÀ-Ý]{2,})\s+([A-ZÉÈÀ][a-zà-ÿ]+)\b/);
+
+            // Type de mission reconnu
+            const knownTags = ['Dialyse','Consultation','Radiologie','Radiothérapie','Echographie','Échographie','Hôpital de jour','Chimiothérapie'];
+            const foundTag = knownTags.find(t => text.toLowerCase().includes(t.toLowerCase()));
+
+            this.ocrCandidates = { times: uniqueTimes, addresses: addressLines, km: kmMatch ? kmMatch[1] : null, tag: foundTag || null };
+
+            // Pré-remplissage (à vérifier / corriger avant d'enregistrer)
+            if(nameMatch){ this.form.patient = `${nameMatch[1]} ${nameMatch[2]}`; this.searchSavedPatient();
+                if(!this.form.dialyseManuel) this.form.dialyse = this.savedDialysePatients.includes(this.form.patient.trim());
+                if(!this.form.tarifB2Manuel) this.form.tarifB2 = this.savedB2Patients.includes(this.form.patient.trim()); }
+            if(foundTag && foundTag.toLowerCase() === 'dialyse'){ this.form.dialyse = true; this.form.dialyseManuel = true; }
+            if(addressLines[0]) this.form.depart = addressLines[0];
+            if(addressLines[1]) this.form.arrivee = addressLines[1];
+            if(uniqueTimes[0]) this.form.heureDepart = uniqueTimes[0];
+            if(uniqueTimes[1]) this.form.heureRdv = uniqueTimes[1];
+            if(!this.form.majNuitManuel) this.form.majNuit = this.isNightTime(this.form.heureDepart || this.form.heureRdv);
+            if(!this.form.majFerieManuel) this.form.majFerie = this.isFerieCourse({ date: this.selectedDate, heureDepart: this.form.heureDepart, heureRdv: this.form.heureRdv });
+
+            this.editingId = null;
+            this.showForm = true;
+        },
+        // Découpe une photo contenant plusieurs fiches mission ("Aujourd'hui"/"Demain" répétés,
+        // format de l'app mobile officielle) en missions individuelles.
+        parseOcrMissions(text){
+            const markerRegex = /(Aujourd'?\s*hui|Demain)/gi;
+            const indices = [];
+            let m;
+            while((m = markerRegex.exec(text))) indices.push({ idx: m.index, label: m[1] });
+            if(indices.length === 0) return [];
+
+            const blocks = indices.map((cur, i) => {
+                const end = i + 1 < indices.length ? indices[i + 1].idx : text.length;
+                return { label: /demain/i.test(cur.label) ? 'Demain' : "Aujourd'hui", text: text.slice(cur.idx, end) };
+            });
+
+            return blocks.map(b => this.parseMissionBlock(b.text, b.label)).filter(Boolean);
+        },
+        parseMissionBlock(block, label){
+            const cleanAddr = s => s ? s.replace(/\s+/g, ' ').trim() : '';
+
+            const typeTrajet = /Retour/i.test(block) ? 'retour' : 'aller';
+            const pecMatch = block.match(/PEC\s*:?\s*([0-2]?\d)[h:.]([0-5]\d)/i);
+            const rdvMatch = block.match(/RDV\s*:?\s*([0-2]?\d)[h:.]([0-5]\d)/i);
+
+            const departMatch = block.match(/D[ée]part\s*:?\s*([\s\S]*?)(?=Arriv[ée]e?\s*:)/i);
+            const arriveeMatch = block.match(/Arriv[ée]e?\s*:?\s*([\s\S]*?)(?=(?:Monsieur|Madame)|$)/i);
+            const patientMatch = block.match(/(Monsieur|Madame)\s+([A-ZÀ-Ý][A-ZÀ-Ý\s]*?)\s+([A-ZÉÈÀ][a-zà-ÿ]+)\b/);
+
+            if(!pecMatch && !departMatch && !patientMatch) return null; // bloc pas assez reconnaissable, on l'ignore
+
+            return {
+                label,
+                typeTrajet,
+                heureDepart: pecMatch ? `${pecMatch[1].padStart(2, '0')}:${pecMatch[2]}` : '',
+                heureRdv: rdvMatch ? `${rdvMatch[1].padStart(2, '0')}:${rdvMatch[2]}` : '',
+                pasDeCreneauRetour: !rdvMatch,
+                depart: cleanAddr(departMatch ? departMatch[1] : ''),
+                arrivee: cleanAddr(arriveeMatch ? arriveeMatch[1] : ''),
+                patient: patientMatch ? `${patientMatch[2].trim()} ${patientMatch[3]}` : ''
+            };
+        },
+        // Charge une mission détectée dans le formulaire pour vérification avant enregistrement,
+        // puis la retire de la file d'attente (elle sera ajoutée via le bouton habituel du formulaire).
+        useOcrMission(i){
+            const mission = this.ocrMissions[i];
+            if(!mission) return;
+            this.closeForm();
+            this.form.patient = mission.patient;
+            this.form.heureDepart = mission.heureDepart;
+            this.form.heureRdv = mission.heureRdv;
+            this.form.pasDeCreneauRetour = mission.pasDeCreneauRetour;
+            this.form.depart = mission.depart;
+            this.form.arrivee = mission.arrivee;
+            this.form.typeTrajet = mission.typeTrajet;
+            if(!this.form.dialyseManuel) this.form.dialyse = this.savedDialysePatients.includes(this.form.patient.trim());
+            if(!this.form.tarifB2Manuel) this.form.tarifB2 = this.savedB2Patients.includes(this.form.patient.trim());
+            if(!this.form.majNuitManuel) this.form.majNuit = this.isNightTime(this.form.heureDepart || this.form.heureRdv);
+            if(!this.form.majFerieManuel) this.form.majFerie = this.isFerieCourse({ date: this.selectedDate, heureDepart: this.form.heureDepart, heureRdv: this.form.heureRdv });
+            this.searchSavedPatient();
+            this.ocrMissions.splice(i, 1);
+            this.editingId = null;
+            this.showForm = true;
+        },
+        discardOcrMission(i){
+            this.ocrMissions.splice(i, 1);
+        },
+        async addCourse(){
+            const heureRdvOk = this.form.heureRdv || this.form.pasDeCreneauRetour;
+            if(!this.form.patient||!this.form.heureDepart||!heureRdvOk||!this.form.depart||!this.form.arrivee) return;
+            if(this.form.pasDeCreneauRetour) this.form.heureRdv = this.form.heureDepart;
+            const id = Math.random().toString(36).slice(2,10);
+            const cleanName = this.form.patient.trim();
+            const newCourse = {
+                id, date:this.selectedDate, ...this.form, patient:cleanName,
+                travelMin:null, km:null, arriveeEstimee:'', heureDepartReel:'',
+                heureLiberation:'', status:'juste', retardMin:0, coordsDepart:null, coordsArrivee:null,
+                tempsLiaison:null, tempsLibreAvant:null, liaisonPossible:null, heureDepartConseillee:null,
+                margeMin:this.form.margeMin||10, marginMax:this.form.marginMax||10,
+                isOfflineCalc:false,
+                forfaitType:'dep', forfaitTypeManuel:false,
+                majNuit:!!this.form.majNuit, majNuitManuel:!!this.form.majNuitManuel, majFerie:!!this.form.majFerie, majFerieManuel:!!this.form.majFerieManuel,
+                peage:parseFloat(this.form.peage)||0, supplements:parseFloat(this.form.supplements)||0,
+                tarif:null, expanded:true, pecReelle:null, departReel:null, depotReelle:null,
+                editingPec:false, editingDepart:false, editingDepot:false,
+                editingKm:false, kmManuel:false, kmMemoire:false,
+                editingTarif:false, tarifManuel:false, tarifMemoire:false, tarifManuelValeur:null
+            };
+            if(cleanName && !this.savedPatients.includes(cleanName)){
+                this.savedPatients.push(cleanName);
+                localStorage.setItem('ambulances_patients_history', JSON.stringify(this.savedPatients));
+            }
+            if(newCourse.dialyse && cleanName && !this.savedDialysePatients.includes(cleanName)){
+                this.savedDialysePatients.push(cleanName);
+                localStorage.setItem('ambulances_dialyse_patients', JSON.stringify(this.savedDialysePatients));
+            }
+            if(newCourse.tarifB2 && cleanName && !this.savedB2Patients.includes(cleanName)){
+                this.savedB2Patients.push(cleanName);
+                localStorage.setItem('ambulances_b2_patients', JSON.stringify(this.savedB2Patients));
+            }
+            this.courses.push(newCourse);
+            this.save();
+            this.closeForm();
+            await this.calculateRoute(newCourse);
+            await this.recalculerChaineAPartir(newCourse.id);
+        },
+
+        async updateCourse(){
+            const idx = this.courses.findIndex(c => c.id===this.editingId);
+            if(idx===-1){ this.closeForm(); return; }
+            if(this.form.pasDeCreneauRetour) this.form.heureRdv = this.form.heureDepart;
+            const cleanName = this.form.patient.trim();
+            const adresseDepartChangee  = this.courses[idx].depart   !== this.form.depart;
+            const adresseArriveeChangee = this.courses[idx].arrivee  !== this.form.arrivee;
+            Object.assign(this.courses[idx], {
+                patient:cleanName, heureDepart:this.form.heureDepart, heureRdv:this.form.heureRdv,
+                depart:this.form.depart, arrivee:this.form.arrivee, typeTrajet:this.form.typeTrajet,
+                margeMin:this.form.margeMin||10, marginMax:this.form.marginMax||10,
+                majNuit:!!this.form.majNuit, majNuitManuel:!!this.form.majNuitManuel, majFerie:!!this.form.majFerie, majFerieManuel:!!this.form.majFerieManuel,
+                peage:parseFloat(this.form.peage)||0, supplements:parseFloat(this.form.supplements)||0,
+                dialyse:!!this.form.dialyse, dialyseManuel:!!this.form.dialyseManuel,
+                tarifB2:!!this.form.tarifB2, tarifB2Manuel:!!this.form.tarifB2Manuel
+            });
+            if(this.form.dialyse && cleanName && !this.savedDialysePatients.includes(cleanName)){
+                this.savedDialysePatients.push(cleanName);
+                localStorage.setItem('ambulances_dialyse_patients', JSON.stringify(this.savedDialysePatients));
+            }
+            if(this.form.tarifB2 && cleanName && !this.savedB2Patients.includes(cleanName)){
+                this.savedB2Patients.push(cleanName);
+                localStorage.setItem('ambulances_b2_patients', JSON.stringify(this.savedB2Patients));
+            }
+            if(adresseDepartChangee)  { this.courses[idx].coordsDepart  = null; this.courses[idx].kmManuel = false; this.courses[idx].kmMemoire = false; this.courses[idx].tarifManuel = false; this.courses[idx].tarifMemoire = false; this.courses[idx].tarifManuelValeur = null; }
+            if(adresseArriveeChangee) { this.courses[idx].coordsArrivee = null; this.courses[idx].kmManuel = false; this.courses[idx].kmMemoire = false; this.courses[idx].tarifManuel = false; this.courses[idx].tarifMemoire = false; this.courses[idx].tarifManuelValeur = null; }
+            if(cleanName && !this.savedPatients.includes(cleanName)){
+                this.savedPatients.push(cleanName);
+                localStorage.setItem('ambulances_patients_history', JSON.stringify(this.savedPatients));
+            }
+            this.save();
+            const updated = this.courses[idx];
+            this.closeForm();
+            await this.calculateRoute(updated);
+            await this.recalculerChaineAPartir(updated.id);
+        },
+
+        openEditCourse(course){
+            this.editingId = course.id;
+            this.form = {
+                patient:course.patient, heureDepart:course.heureDepart, heureRdv:course.heureRdv,
+                depart:course.depart, arrivee:course.arrivee, typeTrajet:course.typeTrajet,
+                margeMin:course.margeMin||10, marginMax:course.marginMax||10,
+                majNuit:!!course.majNuit, majNuitManuel:!!course.majNuitManuel, majFerie:!!course.majFerie, majFerieManuel:!!course.majFerieManuel,
+                peage:course.peage||0, supplements:course.supplements||0,
+                dialyse:!!course.dialyse, dialyseManuel:!!course.dialyseManuel,
+                tarifB2:!!course.tarifB2, tarifB2Manuel:!!course.tarifB2Manuel,
+                pasDeCreneauRetour: course.pasDeCreneauRetour !== undefined
+                    ? course.pasDeCreneauRetour
+                    : (course.heureRdv===course.heureDepart)
+            };
+            this.showForm = true;
+        },
+
+        closeForm(){
+            this.showForm=false; this.editingId=null;
+            this.form={ patient:'', heureDepart:'', heureRdv:'', depart:'', arrivee:'', typeTrajet:'aller', margeMin:10, marginMax:10, majNuit:false, majNuitManuel:false, majFerie:false, majFerieManuel:false, peage:0, supplements:0, pasDeCreneauRetour:false, dialyse:false, dialyseManuel:false, tarifB2:false, tarifB2Manuel:false };
+            this.suggestionsDepart=[]; this.suggestionsArrivee=[]; this.patientSuggestions=[];
+            this.ocrRawText=''; this.ocrCandidates={ times:[], addresses:[], km:null, tag:null };
+        },
+
+        async deleteCourse(id){
+            if(!confirm('Supprimer ce transport ?')) return;
+            const course = this.courses.find(c => c.id===id);
+            const dateConcernee = course ? course.date : null;
+            this.courses = this.courses.filter(c => c.id!==id);
+            this.save();
+            this.updateTimeToNextCourse();
+            // Après suppression, toute la chaîne de liaisons de cette journée doit
+            // être recalculée (la course qui suivait directement celle supprimée
+            // a maintenant un nouveau "voisin précédent").
+            if(dateConcernee === this.selectedDate){
+                const list = this.filteredCourses;
+                if(list.length > 0) await this.recalculerChaineAPartir(list[0].id);
+            }
+        },
+
+        clearAll(){
+            if(!confirm('Effacer tous les transports de ce jour ?')) return;
+            this.courses = this.courses.filter(c => c.date!==this.selectedDate);
+            this.save();
+            this.updateTimeToNextCourse();
+        },
+
+        /* ══ DUPLIQUER (crée le retour miroir) ══ */
+        async duplicateCourse(course){
+            const id = Math.random().toString(36).slice(2,10);
+            // Heure de récupération automatique : heure RDV + 1h par défaut.
+            // Un retour n'a pas de créneau fixe (on récupère la personne quand elle
+            // est prête) : heureRdv = heureDepart, pour ne jamais déclencher d'alerte.
+            const [hR,mR] = course.heureRdv.split(':').map(Number);
+            const retourDepartMins = hR*60+mR+60;
+            const nouveauType = course.typeTrajet==='aller' ? 'retour' : 'aller';
+            const dupCourse = {
+                ...course,
+                id,
+                typeTrajet: nouveauType,
+                depart: course.arrivee,
+                arrivee: course.depart,
+                coordsDepart: course.coordsArrivee,
+                coordsArrivee: course.coordsDepart,
+                heureDepart: this.minsToTime(retourDepartMins),
+                heureRdv: this.minsToTime(retourDepartMins),
+                pasDeCreneauRetour: nouveauType === 'retour',
+                travelMin:null, km:null, arriveeEstimee:'', heureDepartReel:'',
+                heureLiberation:'', status:'juste', retardMin:0, tempsLiaison:null,
+                tempsLibreAvant:null, liaisonPossible:null, heureDepartConseillee:null, isOfflineCalc:false, expanded:true, pecReelle:null, departReel:null, depotReelle:null,
+                editingPec:false, editingDepart:false, editingDepot:false,
+                editingKm:false, kmManuel:false
+            };
+            this.courses.push(dupCourse);
+            this.save();
+            await this.calculateRoute(dupCourse);
+            await this.recalculerChaineAPartir(dupCourse.id);
+        },
+
+        /* ══ TEMPS LIBRE ENTRE DEUX COURSES ══ */
+        getFreeTimeBetween(course, index){
+            if(index===this.filteredCourses.length-1) return null;
+            const next = this.filteredCourses[index+1];
+            if(!course.heureLiberation || !next.heureDepart) return null;
+            const [hL,mL] = course.heureLiberation.split(':').map(Number);
+            const [hN,mN] = next.heureDepart.split(':').map(Number);
+            let startMins = hL*60+mL;
+            // Si on affiche aujourd'hui et que l'heure actuelle a déjà dépassé l'heure
+            // théorique de libération, on part de l'heure réelle pour un temps libre exact.
+            const todayStr = this.todayLocal();
+            if(this.selectedDate === todayStr){
+                const now = new Date();
+                const nowMins = now.getHours()*60 + now.getMinutes();
+                if(nowMins > startMins) startMins = nowMins;
+            }
+            let diff = (hN*60+mN)-startMins;
+            if(typeof next.tempsLiaison==='number') diff -= next.tempsLiaison;
+            if(diff<=0) return null;
+            const h=Math.floor(diff/60), m=diff%60;
+            return h>0 ? `${h}h ${String(m).padStart(2,'0')}m` : `${m} min`;
+        },
+
+        /* ══ EXPORT / IMPORT JSON ══ */
+        exportJSON(){
+            const data = this.filteredCourses;
+            if(!data.length){ alert('Aucun transport à exporter pour ce jour.'); return; }
+            const json = JSON.stringify({ date:this.selectedDate, courses:data }, null, 2);
+            const blob = new Blob([json], { type:'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `ambulancier-${this.selectedDate}.json`;
+            a.click();
+        },
+        importJSON(){
+            const input = document.createElement('input');
+            input.type='file'; input.accept='.json';
+            input.onchange = async e => {
+                try{
+                    const text = await e.target.files[0].text();
+                    const data = JSON.parse(text);
+                    if(!data.courses) throw new Error();
+                    const toImport = data.courses.map(c => ({
+                        ...c, date: this.selectedDate,
+                        departReel: c.departReel ?? null,
+                        retardMin: c.retardMin ?? 0,
+                        heureDepartConseillee: c.heureDepartConseillee ?? null,
+                        editingKm: false, kmManuel: c.kmManuel ?? false,
+                        kmMemoire: c.kmMemoire ?? false,
+                        editingTarif: false, tarifManuel: c.tarifManuel ?? false,
+                        tarifMemoire: c.tarifMemoire ?? false,
+                        tarifManuelValeur: c.tarifManuelValeur ?? null,
+                        dialyse: c.dialyse ?? this.savedDialysePatients.includes((c.patient||'').trim()),
+                        dialyseManuel: c.dialyseManuel ?? false,
+                        tarifB2: c.tarifB2 ?? this.savedB2Patients.includes((c.patient||'').trim()),
+                        tarifB2Manuel: c.tarifB2Manuel ?? false,
+                        pasDeCreneauRetour: c.pasDeCreneauRetour ?? (c.typeTrajet==='retour' && c.heureRdv===c.heureDepart)
+                    }));
+                    const existingIds = this.courses.map(c => c.id);
+                    const newOnes = toImport.filter(c => !existingIds.includes(c.id));
+                    this.courses = [...this.courses, ...newOnes];
+                    this.save();
+                    alert(`${newOnes.length} transport(s) importé(s).`);
+                    await this.recalculateAllForDay();
+                } catch(e){ alert('Fichier invalide.'); }
+            };
+            input.click();
+        },
+
+        /* ══ INVERSIONS ══ */
+        switchAddresses(){
+            const t=this.form.depart; this.form.depart=this.form.arrivee; this.form.arrivee=t;
+        },
+        async switchExistingCourseAddresses(course){
+            const idx = this.courses.findIndex(c => c.id===course.id);
+            if(idx===-1) return;
+            const temp = this.courses[idx].depart;
+            this.courses[idx].depart   = this.courses[idx].arrivee;
+            this.courses[idx].arrivee  = temp;
+            this.courses[idx].typeTrajet = this.courses[idx].typeTrajet==='aller'?'retour':'aller';
+            this.courses[idx].coordsDepart  = null;
+            this.courses[idx].coordsArrivee = null;
+            this.save();
+            await this.calculateRoute(this.courses[idx]);
+            await this.recalculerChaineAPartir(this.courses[idx].id);
+        },
+
+        /* ══ AUTOCOMPLÉTION PATIENTS ══ */
+        searchSavedPatient(){
+            const q = this.form.patient.trim().toLowerCase();
+            this.patientSuggestions = q.length<2 ? [] : this.savedPatients.filter(n=>n.toLowerCase().includes(q));
+        },
+
+        /* ══ DATE ══ */
+        async saveDate(){
+            await this.recalculateAllForDay();
+            await this.updateTimeToNextCourse();
+        },
+
+        async recalculateAllForDay(){
+            for(const c of this.filteredCourses) await this.calculateRoute(c);
+        },
+
+        /* ══ SAUVEGARDE ══ */
+        save(){ localStorage.setItem('ambulances_courses_v9', JSON.stringify(this.courses)); },
+        saveAjustements(){ localStorage.setItem('ambulances_ajustements_v1', JSON.stringify(this.ajustements)); },
+
+        ajustAdd(){
+            const d = this.ajustForm.date;
+            const m = parseFloat(this.ajustForm.montant);
+            if(!d || !m || m <= 0) return;
+            // Si une entrée existe déjà pour ce jour, on additionne
+            const existing = this.ajustements.find(a => a.date === d);
+            if(existing){
+                existing.montant = parseFloat((parseFloat(existing.montant) + m).toFixed(2));
+            } else {
+                this.ajustements.push({ date: d, montant: parseFloat(m.toFixed(2)) });
+            }
+            this.ajustements.sort((a,b) => a.date.localeCompare(b.date));
+            this.saveAjustements();
+            this.ajustForm.montant = '';
+        },
+
+        ajustDelete(date){
+            this.ajustements = this.ajustements.filter(a => a.date !== date);
+            this.saveAjustements();
+        },
+
+        ajustTotal(){
+            if(!this.bilanDebut || !this.bilanFin) return 0;
+            return this.ajustements
+                .filter(a => a.date >= this.bilanDebut && a.date <= this.bilanFin)
+                .reduce((sum, a) => sum + parseFloat(a.montant), 0);
+        },
+
+        /* ══ COULEURS ══ */
+        getColorStyle(course){
+            return {
+                avance: { color:'#C084FC', bg:'#1E112F', border:'#6D28D9', label:'En avance 💜' },
+                juste:  { color:'#34D399', bg:'#0A251C', border:'#059669', label:'À l\'heure 💚' },
+                retard: { color:'#FBBF24', bg:'#2A1805', border:'#D97706', label:'⚠️ À décaler 💛' }
+            }[course.status||'juste'];
+        }
+    }
+}
+
+/* ── Démarrage Alpine (au cas où le CDN n'est pas encore chargé) ── */
+document.addEventListener('DOMContentLoaded', () => {
+    if(window.Alpine && !window._alpineStarted){
+        window._alpineStarted = true;
+        window.Alpine.start();
+    }
+});
+document.addEventListener('alpine:init', () => {
+    window._alpineStarted = true;
+});
+</script>
+
+</body>
+</html>
